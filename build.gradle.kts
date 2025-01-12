@@ -71,7 +71,7 @@ tasks.modrinth {
 }
 
 modrinth {
-    token.set(providers.gradleProperty("MODRINTH_TOKEN").get())
+    token.set(providers.gradleProperty("MODRINTH_TOKEN").getOrElse(""))
     projectId.set("vdNwyPFz")
     versionNumber.set(project.version.toString())
     versionName.set("Better Mending " + project.version.toString())
