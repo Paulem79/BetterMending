@@ -1,6 +1,6 @@
 name: BetterMending
 main: io.github.paulem.btm.BetterMending
-version: 2.6.4.2
+version: ${version}
 website: paulem79.github.io
 author: Paulem
 description: A small quality of life tweak to the Mending enchantment
