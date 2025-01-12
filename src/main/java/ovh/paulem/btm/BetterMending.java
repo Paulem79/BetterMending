@@ -1,18 +1,18 @@
-package io.github.paulem.btm;
+package ovh.paulem.btm;
 
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
-import io.github.paulem.btm.commands.CommandBTM;
-import io.github.paulem.btm.config.PlayerDataConfig;
-import io.github.paulem.btm.libs.bstats.Metrics;
-import io.github.paulem.btm.listeners.MendingUseListener;
-import io.github.paulem.btm.listeners.PreventDestroyListener;
-import io.github.paulem.btm.config.ConfigManager;
-import io.github.paulem.btm.damage.DamageManager;
-import io.github.paulem.btm.damage.LegacyDamage;
-import io.github.paulem.btm.managers.RepairManager;
-import io.github.paulem.btm.damage.NewerDamage;
-import io.github.paulem.btm.versioning.Versioning;
+import ovh.paulem.btm.commands.CommandBTM;
+import ovh.paulem.btm.config.PlayerDataConfig;
+import ovh.paulem.btm.libs.bstats.Metrics;
+import ovh.paulem.btm.listeners.MendingUseListener;
+import ovh.paulem.btm.listeners.PreventDestroyListener;
+import ovh.paulem.btm.config.ConfigManager;
+import ovh.paulem.btm.damage.DamageManager;
+import ovh.paulem.btm.damage.LegacyDamage;
+import ovh.paulem.btm.managers.RepairManager;
+import ovh.paulem.btm.damage.NewerDamage;
+import ovh.paulem.btm.versioning.Versioning;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 

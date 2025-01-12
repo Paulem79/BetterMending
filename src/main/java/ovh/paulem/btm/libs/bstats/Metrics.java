@@ -12,7 +12,7 @@
  *
  * Violations will result in a ban of your plugin and account from bStats.
  */
-package io.github.paulem.btm.libs.bstats;
+package ovh.paulem.btm.libs.bstats;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

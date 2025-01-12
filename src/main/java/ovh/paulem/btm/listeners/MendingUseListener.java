@@ -1,10 +1,10 @@
-package io.github.paulem.btm.listeners;
+package ovh.paulem.btm.listeners;
 
-import io.github.paulem.btm.config.PlayerDataConfig;
-import io.github.paulem.btm.damage.DamageManager;
-import io.github.paulem.btm.listeners.extendables.DataConfigManagersListener;
-import io.github.paulem.btm.managers.RepairManager;
-import io.github.paulem.btm.versioning.Versioning;
+import ovh.paulem.btm.config.PlayerDataConfig;
+import ovh.paulem.btm.damage.DamageManager;
+import ovh.paulem.btm.listeners.extendables.DataConfigManagersListener;
+import ovh.paulem.btm.managers.RepairManager;
+import ovh.paulem.btm.versioning.Versioning;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;

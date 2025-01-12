@@ -1,6 +1,6 @@
-package io.github.paulem.btm.config;
+package ovh.paulem.btm.config;
 
-import io.github.paulem.btm.BetterMending;
+import ovh.paulem.btm.BetterMending;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 

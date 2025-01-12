@@ -1,4 +1,4 @@
-package io.github.paulem.btm.managers;
+package ovh.paulem.btm.managers;
 
 import java.time.Duration;
 import java.time.Instant;

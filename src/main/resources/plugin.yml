@@ -1,5 +1,5 @@
 name: BetterMending
-main: io.github.paulem.btm.BetterMending
+main: ovh.paulem.btm.BetterMending
 version: ${version}
 website: paulem79.github.io
 author: Paulem

@@ -1,8 +1,8 @@
-package io.github.paulem.btm.listeners;
+package ovh.paulem.btm.listeners;
 
-import io.github.paulem.btm.damage.DamageManager;
-import io.github.paulem.btm.listeners.extendables.ManagersListener;
-import io.github.paulem.btm.managers.RepairManager;
+import ovh.paulem.btm.damage.DamageManager;
+import ovh.paulem.btm.listeners.extendables.ManagersListener;
+import ovh.paulem.btm.managers.RepairManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;

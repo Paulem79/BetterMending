@@ -1,4 +1,4 @@
-package io.github.paulem.btm.versioning;
+package ovh.paulem.btm.versioning;
 
 import org.bukkit.Bukkit;
 

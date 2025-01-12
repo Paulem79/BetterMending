@@ -1,10 +1,10 @@
-package io.github.paulem.btm.managers;
+package ovh.paulem.btm.managers;
 
 import com.github.Anon8281.universalScheduler.UniversalRunnable;
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
-import io.github.paulem.btm.BetterMending;
-import io.github.paulem.btm.damage.DamageManager;
+import ovh.paulem.btm.BetterMending;
+import ovh.paulem.btm.damage.DamageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;

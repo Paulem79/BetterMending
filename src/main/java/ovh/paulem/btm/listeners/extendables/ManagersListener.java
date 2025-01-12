@@ -1,8 +1,8 @@
-package io.github.paulem.btm.listeners.extendables;
+package ovh.paulem.btm.listeners.extendables;
 
-import io.github.paulem.btm.damage.DamageManager;
-import io.github.paulem.btm.managers.CooldownManager;
-import io.github.paulem.btm.managers.RepairManager;
+import ovh.paulem.btm.damage.DamageManager;
+import ovh.paulem.btm.managers.CooldownManager;
+import ovh.paulem.btm.managers.RepairManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;

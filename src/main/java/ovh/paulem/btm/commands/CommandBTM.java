@@ -1,9 +1,8 @@
-package io.github.paulem.btm.commands;
+package ovh.paulem.btm.commands;
 
-import io.github.paulem.btm.config.PlayerDataConfig;
+import ovh.paulem.btm.config.PlayerDataConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

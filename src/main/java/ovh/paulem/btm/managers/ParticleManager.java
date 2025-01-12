@@ -1,9 +1,9 @@
-package io.github.paulem.btm.managers;
+package ovh.paulem.btm.managers;
 
 import com.github.fierioziy.particlenativeapi.api.ParticleNativeAPI;
 import com.github.fierioziy.particlenativeapi.api.utils.ParticleException;
 import com.github.fierioziy.particlenativeapi.core.ParticleNativeCore;
-import io.github.paulem.btm.BetterMending;
+import ovh.paulem.btm.BetterMending;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;

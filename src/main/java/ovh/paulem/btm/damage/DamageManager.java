@@ -1,4 +1,4 @@
-package io.github.paulem.btm.damage;
+package ovh.paulem.btm.damage;
 
 import com.google.common.primitives.Ints;
 import org.bukkit.inventory.ItemStack;

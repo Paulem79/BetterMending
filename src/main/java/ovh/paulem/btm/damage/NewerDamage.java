@@ -1,4 +1,4 @@
-package io.github.paulem.btm.damage;
+package ovh.paulem.btm.damage;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
