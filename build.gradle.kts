@@ -66,6 +66,10 @@ tasks.processResources {
     }
 }
 
+tasks.modrinth {
+    dependsOn(tasks.build)
+}
+
 modrinth {
     token.set(providers.gradleProperty("MODRINTH_TOKEN").get())
     projectId.set("vdNwyPFz")
