@@ -20,6 +20,7 @@ repositories {
             includeGroup("org.spigotmc")
         }
     }
+    maven { url = uri("https://repo.jeff-media.com/public/") }
 
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
     maven { url = uri("https://oss.sonatype.org/content/repositories/central") }

@@ -5,6 +5,7 @@ website: paulem79.github.io
 author: Paulem
 description: A small quality of life tweak to the Mending enchantment
 api-version: 1.13
+folia-supported: true
 
 commands:
   btm:
