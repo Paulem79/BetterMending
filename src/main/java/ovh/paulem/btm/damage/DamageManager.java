@@ -1,7 +1,7 @@
 package ovh.paulem.btm.damage;
 
-import com.google.common.primitives.Ints;
 import org.bukkit.inventory.ItemStack;
+import ovh.paulem.btm.BetterMending;
 
 public interface DamageManager {
     boolean hasDamage(ItemStack item);
@@ -20,6 +20,6 @@ public interface DamageManager {
     }
 
     static int getDamageCalculation(int itemDamages, int expValue, int xpDivisor, double ratio) {
-        return itemDamages - Ints.constrainToRange((int) ((double) expValue / xpDivisor * ratio), 0, itemDamages);
+        return itemDamages - BetterMending.constrainToRange((int) ((double) expValue / xpDivisor * ratio), 0, itemDamages);
     }
 }

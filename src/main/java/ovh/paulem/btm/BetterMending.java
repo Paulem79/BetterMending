@@ -2,9 +2,9 @@ package ovh.paulem.btm;
 
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
+import org.bstats.bukkit.Metrics;
 import ovh.paulem.btm.commands.CommandBTM;
 import ovh.paulem.btm.config.PlayerDataConfig;
-import ovh.paulem.btm.libs.bstats.Metrics;
 import ovh.paulem.btm.listeners.MendingUseListener;
 import ovh.paulem.btm.listeners.PreventDestroyListener;
 import ovh.paulem.btm.config.ConfigManager;
@@ -12,7 +12,7 @@ import ovh.paulem.btm.damage.DamageManager;
 import ovh.paulem.btm.damage.LegacyDamage;
 import ovh.paulem.btm.managers.RepairManager;
 import ovh.paulem.btm.damage.NewerDamage;
-import ovh.paulem.btm.versioning.Versioning;
+import ovh.paulem.btm.versions.Versioning;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -65,5 +65,9 @@ public class BetterMending extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabled! See you later!");
+    }
+
+    public static int constrainToRange(int value, int min, int max) {
+        return Math.min(Math.max(value, min), max);
     }
 }

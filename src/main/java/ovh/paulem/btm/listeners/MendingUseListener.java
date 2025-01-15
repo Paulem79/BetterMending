@@ -4,7 +4,7 @@ import ovh.paulem.btm.config.PlayerDataConfig;
 import ovh.paulem.btm.damage.DamageManager;
 import ovh.paulem.btm.listeners.extendables.DataConfigManagersListener;
 import ovh.paulem.btm.managers.RepairManager;
-import ovh.paulem.btm.versioning.Versioning;
+import ovh.paulem.btm.versions.Versioning;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -17,6 +17,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import ovh.paulem.btm.versions.sounds.SoundsHandler;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -24,8 +25,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class MendingUseListener extends DataConfigManagersListener {
-    private static final Sound ENDERMAN_TELEPORT_SOUND = Versioning.isLegacy() ?
-            Sound.valueOf(Sound.class, "ENTITY_ENDERMEN_TELEPORT") : Sound.valueOf(Sound.class, "ENTITY_ENDERMAN_TELEPORT");
+    private static final Sound ENDERMAN_TELEPORT_SOUND = SoundsHandler.getSoundHandler().getEndermanTeleportSound();
 
     private final Map<UUID, Integer> cooldownUses = new HashMap<>();
 

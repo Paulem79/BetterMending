@@ -1,4 +1,4 @@
-package ovh.paulem.btm.versioning;
+package ovh.paulem.btm.versions;
 
 import org.bukkit.Bukkit;
 
