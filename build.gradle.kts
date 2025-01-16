@@ -59,6 +59,8 @@ tasks.shadowJar {
     relocate("com.github.fierioziy.particlenativeapi", "ovh.paulem.btm.libs.particleapi")
 
     archiveClassifier.set("")
+
+    minimize()
 }
 
 tasks.processResources {
