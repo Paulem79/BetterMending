@@ -1,4 +1,4 @@
-rootProject.name = "BetterThanMending"
+rootProject.name = "BetterMending"
 
 pluginManagement {
     repositories {
