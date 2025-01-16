@@ -11,6 +11,7 @@ on: push
 
 jobs:
   build:
+    permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +20,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: 'zulu'
           cache: gradle
 
       - name: Grant execute permission for gradlew
@@ -27,3 +28,12 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "dev"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            build/libs/*.jar
