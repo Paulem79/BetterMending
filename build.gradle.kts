@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "ovh.paulem.btm"
-version = "2.6.4.5"
+version = "2.6.5"
 
 repositories {
     mavenCentral()
