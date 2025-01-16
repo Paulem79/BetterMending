@@ -18,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class BetterMending extends JavaPlugin {
     public PlayerDataConfig playerDataConfig;
+    public RepairManager mainRepairManager;
 
     @Override
     public void onEnable() {
@@ -36,26 +37,27 @@ public class BetterMending extends JavaPlugin {
 
         final DamageManager damageManager = Versioning.isPost17() ? new NewerDamage() : new LegacyDamage();
 
-        final RepairManager repairManager = new RepairManager(this, config, damageManager);
+        mainRepairManager = new RepairManager(this, config, damageManager);
 
         final String SPIGOT_RESOURCE_ID = "112248";
         new UpdateChecker(this, UpdateCheckSource.SPIGET, SPIGOT_RESOURCE_ID)
-                .checkEveryXHours(24) // Check every 24 hours
+                .checkEveryXHours(24)
                 .setChangelogLink(SPIGOT_RESOURCE_ID)
                 .setNotifyOpsOnJoin(true)
+                .setDownloadLink(SPIGOT_RESOURCE_ID)
                 .checkNow(); // And check right now
 
-        getServer().getPluginManager().registerEvents(new MendingUseListener(config, damageManager, repairManager, playerDataConfig), this);
-        getServer().getPluginManager().registerEvents(new PreventDestroyListener(config, damageManager, repairManager), this);
+        getServer().getPluginManager().registerEvents(new MendingUseListener(config, damageManager, mainRepairManager, playerDataConfig), this);
+        getServer().getPluginManager().registerEvents(new PreventDestroyListener(config, damageManager, mainRepairManager), this);
 
-        final CommandBTM commandBTM = new CommandBTM(config.getInt("version", 0), playerDataConfig, getDescription().getVersion());
+        final CommandBTM commandBTM = new CommandBTM(this, config.getInt("version", 0), playerDataConfig);
         getCommand("btm").setExecutor(commandBTM);
         getCommand("btm").setTabCompleter(commandBTM);
 
         getLogger().info("Enabled!");
 
         if(config.getBoolean("auto-repair", false))
-            repairManager.initAutoRepair();
+            mainRepairManager.initAutoRepair();
 
         if(config.getBoolean("bstat", true)){
             new Metrics(this, 21472);

@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class RepairManager {
-    private final FileConfiguration config;
+    private FileConfiguration config;
     private final TaskScheduler scheduler;
 
     private final DamageManager damageManager;
@@ -111,5 +111,9 @@ public class RepairManager {
         int expValue = config.getInt("expValue", 20);
 
         return (playerXP >= 30 && itemDamages >= expValue * ratio) || (playerXP >= expValue / 10);
+    }
+
+    public void setConfig(FileConfiguration config) {
+        this.config = config;
     }
 }
