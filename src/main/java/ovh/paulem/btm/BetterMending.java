@@ -39,7 +39,7 @@ public class BetterMending extends JavaPlugin {
         final RepairManager repairManager = new RepairManager(this, config, damageManager);
 
         final String SPIGOT_RESOURCE_ID = "112248";
-        new UpdateChecker(this, UpdateCheckSource.SPIGET, SPIGOT_RESOURCE_ID) // You can also use Spiget instead of Spigot - Spiget's API is usually much faster up to date.
+        new UpdateChecker(this, UpdateCheckSource.SPIGET, SPIGOT_RESOURCE_ID)
                 .checkEveryXHours(24) // Check every 24 hours
                 .setChangelogLink(SPIGOT_RESOURCE_ID)
                 .setNotifyOpsOnJoin(true)
@@ -65,9 +65,5 @@ public class BetterMending extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabled! See you later!");
-    }
-
-    public static int constrainToRange(int value, int min, int max) {
-        return Math.min(Math.max(value, min), max);
     }
 }

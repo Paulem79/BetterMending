@@ -40,9 +40,21 @@ public class CommandBTM implements TabExecutor {
             player.sendMessage("Mending's ability has been successfully " + (enabled ? ChatColor.GREEN + "enabled" : ChatColor.RED + "disabled") + " !");
 
             return true;
+        } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+            if (!sender.hasPermission("btm.reload")) {
+                sender.sendMessage(ChatColor.RED + "You don't have permission to do that!");
+                return true;
+            }
+
+            playerDataConfig.reload();
+
+            sender.sendMessage(ChatColor.GREEN + "Config reloaded!");
+
+            return true;
         }
 
-        sender.sendMessage(ChatColor.BLUE + "Running BetterThanMending " + pluginVersion + " with config version " + configVersion);
+        sender.sendMessage(ChatColor.BLUE + "Running BetterThanMending " + ChatColor.GOLD + pluginVersion + " with config version " + ChatColor.DARK_GREEN + configVersion);
+
         return true;
     }
 

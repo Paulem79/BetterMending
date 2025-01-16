@@ -19,6 +19,9 @@ permissions:
   btm.commands.btm:
     description: Control the command /btm used to enable or disable the Mending skill
     default: true
+  btm.commands.reload:
+    description: Control the command /btm reload
+    default: op
   btm.use:
     description: Allows to use the mending ability
     default: true

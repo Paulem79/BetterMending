@@ -8,10 +8,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class PlayerDataConfig {
+    private final BetterMending plugin;
     private final File dataFile;
     private final YamlConfiguration data;
 
     public PlayerDataConfig(BetterMending plugin) {
+        this.plugin = plugin;
+
         this.dataFile = new File(plugin.getDataFolder(), "data.yml");
         try {
             this.dataFile.createNewFile();
@@ -47,5 +50,13 @@ public class PlayerDataConfig {
         this.data.save(this.dataFile);
 
         return getPlayer(player);
+    }
+
+    public void reload() {
+        try {
+            this.data.load(this.dataFile);
+        } catch (Exception e) {
+            plugin.getLogger().throwing(PlayerDataConfig.class.getName(), "reload", e);
+        }
     }
 }
