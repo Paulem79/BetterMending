@@ -1,12 +1,26 @@
+import proguard.gradle.ProGuardTask
+
 plugins {
     id("java")
     id("com.gradleup.shadow") version "8.+"
     id("com.modrinth.minotaur") version "2.+"
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.guardsquare:proguard-gradle:7.+") {
+            exclude("com.android.tools.build")
+        }
+    }
+}
+
 group = "ovh.paulem.btm"
 version = "2.6.5.1"
 
+// ------------------------ REPOSITORIES ------------------------
 repositories {
     mavenCentral()
 
@@ -32,6 +46,7 @@ repositories {
     maven { url = uri("https://oss.sonatype.org/content/repositories/central") }
 }
 
+// ------------------------ DEPENDENCIES ------------------------
 dependencies {
     implementation("org.bstats:bstats-bukkit:3.+")
     implementation("com.jeff_media:SpigotUpdateChecker:3.+") {
@@ -45,38 +60,57 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    JavaVersion.VERSION_1_8.toString().also {
-        sourceCompatibility = it
-        targetCompatibility = it
-    }
-    options.encoding = "UTF-8"
-}
-
-tasks.build {
-    dependsOn(tasks.shadowJar)
-}
+// ------------------------ SHADOW JAR ------------------------
+artifacts.archives(tasks.shadowJar)
 
 tasks.shadowJar {
+    archiveClassifier.set("")
+
+    exclude("META-INF/**")
+    exclude("LICENSE.txt")
+    exclude("License-ASM.txt")
+
     relocate("org.bstats", "ovh.paulem.btm.libs.bstats")
     relocate("com.github.fierioziy.particlenativeapi", "ovh.paulem.btm.libs.particleapi")
     relocate("com.jeff_media.updatechecker", "ovh.paulem.btm.libs.updatechecker")
 
     // Use UniversalScheduler from SpigotUpdateChecker instead of the one from implementation
-    dependencies {
-        exclude("com/github/Anon8281/universalScheduler/*Scheduler/**")
-        exclude("com/github/Anon8281/universalScheduler/scheduling/**")
-        exclude("com/github/Anon8281/universalScheduler/utils/**")
-        exclude("com/github/Anon8281/universalScheduler/UniversalScheduler.**")
-    }
+    exclude("com/github/Anon8281/universalScheduler/*Scheduler/**")
+    exclude("com/github/Anon8281/universalScheduler/scheduling/**")
+    exclude("com/github/Anon8281/universalScheduler/utils/**")
+    exclude("com/github/Anon8281/universalScheduler/UniversalScheduler.**")
 
     relocate("com.github.Anon8281.universalScheduler", "ovh.paulem.btm.libs.updatechecker.universalScheduler")
-
-    archiveClassifier.set("")
 
     minimize()
 }
 
+// ------------------------ PROGUARD ------------------------
+tasks.register<ProGuardTask>("proguardJar") {
+    outputs.upToDateWhen { false }
+    dependsOn(tasks.shadowJar)
+    configuration("proguard-rules.pro")
+
+    injars(tasks.shadowJar)
+    outjars(file("build/libs/temp-${tasks.shadowJar.get().archiveFileName.get()}"))
+
+    finalizedBy("finalizeJar")
+}
+
+// Rename the final proguard jar to the original shadowJar name
+tasks.register("finalizeJar") {
+    dependsOn("proguardJar")
+
+    doLast {
+        val shadowJarFile = tasks.shadowJar.get().archiveFile.get().asFile
+        val proguardedJarFile = file("build/libs/temp-${tasks.shadowJar.get().archiveFileName.get()}")
+
+        shadowJarFile.delete()
+        proguardedJarFile.renameTo(shadowJarFile)
+    }
+}
+
+// ------------------------ RESOURCES PROCESS ------------------------
 tasks.processResources {
     inputs.property("version", version)
 
@@ -85,6 +119,7 @@ tasks.processResources {
     }
 }
 
+// ------------------------ MODRINTH ------------------------
 tasks.modrinth {
     dependsOn(tasks.build)
 }
@@ -100,3 +135,25 @@ modrinth {
     gameVersions.addAll(listOf("1.21.4", "1.21.3", "1.21.2", "1.21.1", "1.21", "1.20.6", "1.20.5", "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17", "1.16.5", "1.16.4", "1.16.3", "1.16.2", "1.16.1", "1.16", "1.15.2", "1.15.1", "1.15", "1.14.4", "1.14.3", "1.14.2", "1.14.1", "1.14", "1.13.2", "1.13.1", "1.13", "1.12.2", "1.12.1", "1.12", "1.11.2", "1.11.1", "1.11", "1.10.2", "1.10.1", "1.10", "1.9.4", "1.9.3", "1.9.2", "1.9.1", "1.9"))
     loaders.addAll(listOf("bukkit", "folia", "paper", "purpur", "spigot"))
 }
+
+// ------------------------ MISC ------------------------
+tasks.withType<JavaCompile>().configureEach {
+    JavaVersion.VERSION_1_8.toString().also {
+        sourceCompatibility = it
+        targetCompatibility = it
+    }
+    options.encoding = "UTF-8"
+}
+
+tasks.build {
+    mustRunAfter(tasks.clean)
+    dependsOn(tasks.clean)
+
+    dependsOn("proguardJar")
+}
+
+java {
+    withSourcesJar()
+}
+
+tasks.jar { enabled = false }
