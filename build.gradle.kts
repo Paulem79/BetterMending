@@ -9,7 +9,6 @@ version = "2.6.5.1"
 
 repositories {
     mavenCentral()
-    mavenLocal()
 
     maven { url = uri("https://jitpack.io") }
     maven {
@@ -20,19 +19,25 @@ repositories {
             includeGroup("org.spigotmc")
         }
     }
-    maven { url = uri("https://repo.jeff-media.com/public/") }
+    maven {
+        name = "paulemReleases"
+        url = uri("https://maven.paulem.ovh/releases")
+    }
+    maven {
+        name = "jeffMediaPublic"
+        url = uri("https://repo.jeff-media.com/public")
+    }
 
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
     maven { url = uri("https://oss.sonatype.org/content/repositories/central") }
-
-    maven {
-        url = uri("https://maven.paulem.ovh/releases")
-    }
 }
 
 dependencies {
     implementation("org.bstats:bstats-bukkit:3.+")
-    implementation("com.jeff_media:SpigotUpdateChecker:3.+")
+    implementation("com.jeff_media:SpigotUpdateChecker:3.+") {
+        exclude(group = "com.github.Anon8281", module = "UniversalScheduler")
+        exclude(group = "com.jeff_media.updatechecker.universalScheduler")
+    }
     implementation("com.github.Anon8281:UniversalScheduler:0.+")
     implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.+")
 
@@ -54,9 +59,18 @@ tasks.build {
 
 tasks.shadowJar {
     relocate("org.bstats", "ovh.paulem.btm.libs.bstats")
-    relocate("com.jeff_media.updatechecker", "ovh.paulem.btm.libs.updatechecker")
-    relocate("com.github.Anon8281.universalScheduler", "ovh.paulem.btm.libs.universalScheduler")
     relocate("com.github.fierioziy.particlenativeapi", "ovh.paulem.btm.libs.particleapi")
+    relocate("com.jeff_media.updatechecker", "ovh.paulem.btm.libs.updatechecker")
+
+    // Use UniversalScheduler from SpigotUpdateChecker instead of the one from implementation
+    dependencies {
+        exclude("com/github/Anon8281/universalScheduler/*Scheduler/**")
+        exclude("com/github/Anon8281/universalScheduler/scheduling/**")
+        exclude("com/github/Anon8281/universalScheduler/utils/**")
+        exclude("com/github/Anon8281/universalScheduler/UniversalScheduler.**")
+    }
+
+    relocate("com.github.Anon8281.universalScheduler", "ovh.paulem.btm.libs.updatechecker.universalScheduler")
 
     archiveClassifier.set("")
 
@@ -64,10 +78,10 @@ tasks.shadowJar {
 }
 
 tasks.processResources {
-    inputs.property("version", project.version)
+    inputs.property("version", version)
 
     filesMatching("plugin.yml") {
-        expand(mapOf("version" to project.version))
+        expand(mapOf("version" to version))
     }
 }
 
@@ -78,8 +92,8 @@ tasks.modrinth {
 modrinth {
     token.set(providers.gradleProperty("MODRINTH_TOKEN").getOrElse(""))
     projectId.set("vdNwyPFz")
-    versionNumber.set(project.version.toString())
-    versionName.set("Better Mending " + project.version.toString())
+    versionNumber.set(version.toString())
+    versionName.set("Better Mending $version")
     versionType.set("release")
     changelog.set("Fixed config reload".replace("\n", "<br>"))
     uploadFile.set(tasks.shadowJar)
