@@ -39,10 +39,9 @@ public class BetterMending extends JavaPlugin {
 
         mainRepairManager = new RepairManager(this, config, damageManager);
 
-        final String SPIGOT_RESOURCE_ID = "112248";
-        new UpdateChecker(this, UpdateCheckSource.SPIGET, SPIGOT_RESOURCE_ID)
+        final int SPIGOT_RESOURCE_ID = 112248;
+        new UpdateChecker(this, UpdateCheckSource.SPIGET, String.valueOf(SPIGOT_RESOURCE_ID))
                 .checkEveryXHours(24)
-                .setChangelogLink(SPIGOT_RESOURCE_ID)
                 .setNotifyOpsOnJoin(true)
                 .setDownloadLink(SPIGOT_RESOURCE_ID)
                 .checkNow(); // And check right now

@@ -127,7 +127,7 @@ val paperDir = rootDir.resolve("servers").resolve("paper")
 
 listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21.4").forEach { version ->
     task<LaunchMinecraftServerTask>("paper-$version") {
-            dependsOn("finalizeJar")
+        dependsOn("finalizeJar")
 
         doFirst {
             copies(version, paperDir)
@@ -139,7 +139,29 @@ listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21.4").forEach { version ->
     }
 }
 
+val foliaDir = rootDir.resolve("servers").resolve("folia")
+
+listOf("1.21.4").forEach { version ->
+    task<LaunchMinecraftServerTask>("folia-$version") {
+        dependsOn("finalizeJar")
+
+        doFirst {
+            copies(version, foliaDir)
+        }
+
+        serverDirectory.set(foliaDir.resolve(version).absolutePath)
+        jarUrl.set(LaunchMinecraftServerTask.JarUrl.Folia(version))
+        agreeEula.set(true)
+    }
+}
+
 private fun copies(version: String, workDir: File) {
+    delete {
+        delete(fileTree(workDir.resolve("$version/plugins")).filter {
+            it.isFile() && it.extension == "jar" && it.parentFile == workDir.resolve("$version/plugins")
+        })
+    }
+
     // Copy the ops.json file to the server directory
     copy {
         from(rootDir.resolve("resources").resolve("ops.json"))
