@@ -83,12 +83,12 @@ public class RepairManager {
 
         if (playerXP >= 30 && itemDamages >= expValue * ratio) {
             damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, ratio));
-            if(isAutoRepair) ExperienceManager.changePlayerExp(player, -expValue);
-            else ExperienceManager.changePlayerExp(player, -autoRepairExpValue);
+            if(isAutoRepair) ExperienceManager.changePlayerExp(player, -autoRepairExpValue);
+            else ExperienceManager.changePlayerExp(player, -expValue);
         } else if (playerXP >= expValue/10) {
             damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, 10, ratio));
-            if(isAutoRepair) ExperienceManager.changePlayerExp(player, -expValue/10);
-            else ExperienceManager.changePlayerExp(player, -autoRepairExpValue/10);
+            if(isAutoRepair) ExperienceManager.changePlayerExp(player, -autoRepairExpValue/10);
+            else ExperienceManager.changePlayerExp(player, -expValue/10);
         } else return;
 
         // Should play sound?

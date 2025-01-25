@@ -3,10 +3,14 @@ package ovh.paulem.btm.managers;
 import com.github.fierioziy.particlenativeapi.api.ParticleNativeAPI;
 import com.github.fierioziy.particlenativeapi.api.utils.ParticleException;
 import com.github.fierioziy.particlenativeapi.core.ParticleNativeCore;
+import org.bukkit.Color;
+import org.bukkit.Particle;
 import ovh.paulem.btm.BetterMending;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import ovh.paulem.btm.utils.ReflectionUtils;
+import ovh.paulem.btm.versions.Versioning;
 
 public class ParticleManager {
     private final FileConfiguration config;
@@ -37,12 +41,20 @@ public class ParticleManager {
             particleLoc.setX(location.getX() + Math.cos(d) * size);
             particleLoc.setZ(location.getZ() + Math.sin(d) * size);
 
-            api.LIST_1_8.REDSTONE
-                    .packetColored(false, particleLoc,
-                            checkRGB(config.getInt("color.red", 144), 144),
-                            checkRGB(config.getInt("color.green", 238), 238),
-                            checkRGB(config.getInt("color.blue", 144), 144))
-                    .sendTo(player);
+            Color particleColor = Color.fromRGB(
+                    checkRGB(config.getInt("color.red", 144), 144),
+                    checkRGB(config.getInt("color.green", 238), 238),
+                    checkRGB(config.getInt("color.blue", 144), 144)
+            );
+
+            if(Versioning.isIn13()) {
+                player.spawnParticle(ReflectionUtils.getValueFromEnum(Particle.class, "REDSTONE"),
+                        particleLoc, 0, 0, 0, 0, 1, new Particle.DustOptions(particleColor, 1));
+            } else {
+                api.LIST_1_8.REDSTONE
+                        .packetColored(false, particleLoc, particleColor)
+                        .sendTo(player);
+            }
         }
     }
 

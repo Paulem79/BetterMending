@@ -4,7 +4,6 @@ import ovh.paulem.btm.config.PlayerDataConfig;
 import ovh.paulem.btm.damage.DamageManager;
 import ovh.paulem.btm.listeners.extendables.DataConfigManagersListener;
 import ovh.paulem.btm.managers.RepairManager;
-import ovh.paulem.btm.versions.Versioning;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -114,7 +113,7 @@ public class MendingUseListener extends DataConfigManagersListener {
 
                 player.sendMessage(text);
             }
-            if(config.getBoolean("cooldown.sound", true))
+            if(config.getBoolean("cooldown.sound", true) && ENDERMAN_TELEPORT_SOUND != null)
                 player.playSound(
                         player.getLocation(),
                         ENDERMAN_TELEPORT_SOUND,

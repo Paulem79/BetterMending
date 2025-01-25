@@ -46,6 +46,8 @@
 
 -ignorewarnings
 
+-keepattributes *Annotations*
+
 # GSON
 -keepattributes Signature
 -keepattributes Signature

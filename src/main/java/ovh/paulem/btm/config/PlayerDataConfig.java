@@ -28,12 +28,8 @@ public class PlayerDataConfig {
         return this.data.getBoolean(player.getUniqueId().toString());
     }
 
-    public<T> T getPlayerOrDefault(Player player, T def) {
-        Object returned = this.data.get(player.getUniqueId().toString());
-
-        if(returned == null) return def;
-
-        return (T) returned;
+    public boolean getPlayerOrDefault(Player player, boolean defaultValue) {
+        return this.data.getBoolean(player.getUniqueId().toString(), defaultValue);
     }
 
     public boolean getPlayerOrCreate(Player player, boolean enabled) throws IOException {

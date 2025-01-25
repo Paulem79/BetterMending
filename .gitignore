@@ -1,3 +1,5 @@
+resources/
+servers/
 .idea
 .gradle
 build/

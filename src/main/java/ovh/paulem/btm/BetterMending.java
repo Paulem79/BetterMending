@@ -12,9 +12,9 @@ import ovh.paulem.btm.damage.DamageManager;
 import ovh.paulem.btm.damage.LegacyDamage;
 import ovh.paulem.btm.managers.RepairManager;
 import ovh.paulem.btm.damage.NewerDamage;
-import ovh.paulem.btm.versions.Versioning;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import ovh.paulem.btm.versions.Versioning;
 
 public class BetterMending extends JavaPlugin {
     public PlayerDataConfig playerDataConfig;

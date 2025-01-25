@@ -15,6 +15,10 @@ public class Versioning {
         return !isPost(12, 2);
     }
 
+    public static boolean isIn13() {
+        return isPost(12, 2) && !isPost(13, 2);
+    }
+
     private static boolean isPost(int v) {
         String version = Bukkit.getVersion();
         String[] mcParts = version.substring(version.indexOf("MC: ") + 4, version.length() - 1).split("\\.");
@@ -24,6 +28,6 @@ public class Versioning {
     private static boolean isPost(int v, int r) {
         String version = Bukkit.getVersion();
         String[] mcParts = version.substring(version.indexOf("MC: ") + 4, version.length() - 1).split("\\.");
-        return Integer.parseInt(mcParts[1]) > v || (Integer.parseInt(mcParts[1]) == v && Integer.parseInt(mcParts[2]) >= r);
+        return Integer.parseInt(mcParts[1]) > v || (Integer.parseInt(mcParts[1]) == v && Integer.parseInt(mcParts[2]) > r);
     }
 }

@@ -9,11 +9,12 @@ folia-supported: true
 
 commands:
   btm:
-    usage: /btm [toggle, version]
+    usage: /btm [toggle, reload]
     description: Enable or disable the Mending skill
     permission: btm.commands.btm
     aliases:
       - betterthanmending
+      - bettermending
 
 permissions:
   btm.commands.btm:

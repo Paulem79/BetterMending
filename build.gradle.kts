@@ -1,9 +1,13 @@
+import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
 import proguard.gradle.ProGuardTask
 
 plugins {
     id("java")
     id("com.gradleup.shadow") version "8.+"
+
     id("com.modrinth.minotaur") version "2.+"
+
+    id("dev.s7a.gradle.minecraft.server") version "3.+"
 }
 
 buildscript {
@@ -18,7 +22,7 @@ buildscript {
 }
 
 group = "ovh.paulem.btm"
-version = "2.6.6"
+version = "2.6.6.1"
 
 // ------------------------ REPOSITORIES ------------------------
 repositories {
@@ -56,8 +60,32 @@ dependencies {
     implementation("com.github.Anon8281:UniversalScheduler:0.+")
     implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.+")
 
-    compileOnly("org.jetbrains:annotations:24.+")
     compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("org.jetbrains:annotations:24.+")
+}
+
+// ------------------------ PROGUARD ------------------------
+tasks.register<ProGuardTask>("proguardJar") {
+    outputs.upToDateWhen { false }
+    dependsOn(tasks.shadowJar)
+    configuration("proguard-rules.pro")
+
+    injars(tasks.shadowJar)
+    outjars(file("build/libs/temp-${tasks.shadowJar.get().archiveFileName.get()}"))
+
+    finalizedBy("finalizeJar")
+}
+
+// Rename the final proguard jar to the original shadowJar name
+tasks.register("finalizeJar") {
+    dependsOn("proguardJar")
+    doLast {
+        val shadowJarFile = tasks.shadowJar.get().archiveFile.get().asFile
+        val proguardedJarFile = file("build/libs/temp-${tasks.shadowJar.get().archiveFileName.get()}")
+
+        shadowJarFile.delete()
+        proguardedJarFile.renameTo(shadowJarFile)
+    }
 }
 
 // ------------------------ SHADOW JAR ------------------------
@@ -85,37 +113,51 @@ tasks.shadowJar {
     minimize()
 }
 
-// ------------------------ PROGUARD ------------------------
-tasks.register<ProGuardTask>("proguardJar") {
-    outputs.upToDateWhen { false }
-    dependsOn(tasks.shadowJar)
-    configuration("proguard-rules.pro")
-
-    injars(tasks.shadowJar)
-    outjars(file("build/libs/temp-${tasks.shadowJar.get().archiveFileName.get()}"))
-
-    finalizedBy("finalizeJar")
-}
-
-// Rename the final proguard jar to the original shadowJar name
-tasks.register("finalizeJar") {
-    dependsOn("proguardJar")
-
-    doLast {
-        val shadowJarFile = tasks.shadowJar.get().archiveFile.get().asFile
-        val proguardedJarFile = file("build/libs/temp-${tasks.shadowJar.get().archiveFileName.get()}")
-
-        shadowJarFile.delete()
-        proguardedJarFile.renameTo(shadowJarFile)
-    }
-}
-
 // ------------------------ RESOURCES PROCESS ------------------------
 tasks.processResources {
     inputs.property("version", version)
 
     filesMatching("plugin.yml") {
         expand(mapOf("version" to version))
+    }
+}
+
+// ------------------------ PAPER TEST SYSTEM ------------------------
+val paperDir = rootDir.resolve("servers").resolve("paper")
+
+listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21.4").forEach { version ->
+    task<LaunchMinecraftServerTask>("paper-$version") {
+            dependsOn("finalizeJar")
+
+        doFirst {
+            copies(version, paperDir)
+        }
+
+        serverDirectory.set(paperDir.resolve(version).absolutePath)
+        jarUrl.set(LaunchMinecraftServerTask.JarUrl.Paper(version))
+        agreeEula.set(true)
+    }
+}
+
+private fun copies(version: String, workDir: File) {
+    // Copy the ops.json file to the server directory
+    copy {
+        from(rootDir.resolve("resources").resolve("ops.json"))
+        into(workDir.resolve(version))
+    }
+
+    // Copy the jar file to the plugins directory
+    copy {
+        from(tasks.shadowJar.get().archiveFile.get().asFile.absolutePath)
+        into(workDir.resolve("$version/plugins"))
+    }
+
+    // Copy the plugins to the plugins directory
+    copy {
+        from(fileTree(rootDir.resolve("resources")).filter {
+            it.isFile() && it.extension == "jar" && it.nameWithoutExtension.startsWith("pl-")
+        })
+        into(workDir.resolve("$version/plugins"))
     }
 }
 
