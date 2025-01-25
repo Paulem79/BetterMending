@@ -123,6 +123,6 @@ public class MendingUseListener extends DataConfigManagersListener {
     }
 
     public void useRepair(Player player, ItemStack item){
-        repairManager.repairItem(player, item, config.getBoolean("playSound", true), config.getBoolean("playEffect", true));
+        repairManager.repairItem(player, item, config.getBoolean("playSound", true), config.getBoolean("playEffect", true), false);
     }
 }

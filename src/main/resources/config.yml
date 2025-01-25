@@ -4,6 +4,11 @@
 # true: auto-repair false: default repair
 auto-repair: false
 
+# Configure the auto repair (suggested by SuperBeacon)
+auto-repair-config:
+  # The consumed experience for each repair by the auto-repair (default: 20)
+  expConsumed: 20
+
 # Prevent mending item destroy when you don't have enough experience
 # true: prevent destroy false: default destroy
 prevent-destroy: false
@@ -62,21 +67,21 @@ soundVolume: 1
 # The speed of the sound, 1 is default, smaller than 1 is slower
 soundPitch: 1
 
-# -------- EFFECT --------
-# Enable or disable the effect
+# -------- PARTICLES --------
+# Enable or disable the particles
 playEffect: true
 
-# The effect range from the player (suggested by Kad_L)
+# The particles range from the player (suggested by Kad_L)
 range: 3
 
-# The color used in the effect (RGB, each value need to be between 0 and 255)
+# The color used for particles (RGB, each value need to be between 0 and 255)
 # default (in the order of color): 144, 238, 144
 color:
   red: 144
   green: 238
   blue: 144
 
-# The offset of the effect, from the player Eyes location, can be a negative value
+# The offset of particles, from the player Eyes location, can be a negative value
 offset:
   x: 0.0
   y: 0.0
@@ -87,4 +92,4 @@ offset:
 bstat: true
 
 # Please, do not touch!
-version: 9
+version: 10

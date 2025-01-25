@@ -55,7 +55,7 @@ public class RepairManager {
                         if (config.getBoolean("repairFullInventory", true)) {
                             for (ItemStack item : damageables) {
                                 if (item != null) {
-                                    repairItem(player, item, false, false);
+                                    repairItem(player, item, false, false, true);
                                 }
                             }
 
@@ -63,7 +63,7 @@ public class RepairManager {
                             ItemStack item = damageables.get(ThreadLocalRandom.current().nextInt(damageables.size()));
 
                             if (item != null) {
-                                repairItem(player, item, false, false);
+                                repairItem(player, item, false, false, true);
                             }
                         }
                     }
@@ -72,29 +72,32 @@ public class RepairManager {
         }, delay, delay);
     }
 
-    public void repairItem(Player player, ItemStack item, boolean playSound, boolean playParticle){
-
+    public void repairItem(Player player, ItemStack item, boolean playSound, boolean playParticle, boolean isAutoRepair){
         double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
         int playerXP = ExperienceManager.getPlayerXP(player);
 
         int itemDamages = damageManager.getDamage(item);
 
         int expValue = config.getInt("expValue", 20);
+        int autoRepairExpValue = config.getInt("auto-repair-config.expConsumed", 20);
 
         if (playerXP >= 30 && itemDamages >= expValue * ratio) {
             damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, ratio));
-            ExperienceManager.changePlayerExp(player, -expValue);
+            if(isAutoRepair) ExperienceManager.changePlayerExp(player, -expValue);
+            else ExperienceManager.changePlayerExp(player, -autoRepairExpValue);
         } else if (playerXP >= expValue/10) {
             damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, 10, ratio));
-            ExperienceManager.changePlayerExp(player, -expValue/10);
+            if(isAutoRepair) ExperienceManager.changePlayerExp(player, -expValue/10);
+            else ExperienceManager.changePlayerExp(player, -autoRepairExpValue/10);
         } else return;
 
         // Should play sound?
-        if(playSound)
+        if(playSound) {
             player.playSound(player.getLocation(),
                     Sound.BLOCK_ANVIL_PLACE,
                     (float) config.getDouble("soundVolume", 1),
                     (float) config.getDouble("soundPitch", 1));
+        }
 
         // Should play particle?
         if(playParticle) {
