@@ -61,7 +61,7 @@ dependencies {
     implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.+")
 
     compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("org.jetbrains:annotations:24.+")
+    compileOnly("org.jetbrains:annotations:26.+")
 }
 
 // ------------------------ PROGUARD ------------------------
