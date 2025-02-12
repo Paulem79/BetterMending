@@ -1,8 +1,8 @@
-package ovh.paulem.btm.managers;
+package ovh.paulem.btm.utils;
 
 import org.bukkit.entity.Player;
 
-public class ExperienceManager {
+public class ExperienceUtils {
     public static void changePlayerExp(Player player, int exp){
         int currentExp = getPlayerXP(player);
 

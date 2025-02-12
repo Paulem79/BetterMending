@@ -1,5 +1,6 @@
 package ovh.paulem.btm.listeners;
 
+import org.bukkit.GameMode;
 import ovh.paulem.btm.config.PlayerDataConfig;
 import ovh.paulem.btm.damage.DamageManager;
 import ovh.paulem.btm.listeners.extendables.DataConfigManagersListener;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import ovh.paulem.btm.versions.sounds.SoundsHandler;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -36,7 +38,9 @@ public class MendingUseListener extends DataConfigManagersListener {
     public void onItemUse(PlayerInteractEvent e) {
         Player player = e.getPlayer();
 
-        if(!player.hasPermission("btm.use")) return;
+        // If the player doesn't have perm btm.use or is in creative or spectator mode, do not repair
+        if(!player.hasPermission("btm.use") ||
+                Arrays.asList(GameMode.SPECTATOR, GameMode.CREATIVE).contains(player.getGameMode())) return;
 
         if(!playerDataConfig.getPlayerOrDefault(player, true)) return;
 

@@ -1,6 +1,5 @@
 package ovh.paulem.btm.commands;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import ovh.paulem.btm.BetterMending;
 import ovh.paulem.btm.config.PlayerDataConfig;
 import org.bukkit.ChatColor;
@@ -8,7 +7,7 @@ import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ovh.paulem.btm.listeners.extendables.ManagersListener;
+import ovh.paulem.btm.utils.PluginUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -50,12 +49,7 @@ public class CommandBTM implements TabExecutor {
                 return true;
             }
 
-            plugin.reloadConfig();
-
-            FileConfiguration reloadedConfig = plugin.getConfig();
-            playerDataConfig.reload();
-            plugin.mainRepairManager.setConfig(reloadedConfig);
-            ManagersListener.reloadConfig(reloadedConfig);
+            PluginUtils.reloadConfig(plugin);
 
             sender.sendMessage(ChatColor.GREEN + "Config reloaded!");
 

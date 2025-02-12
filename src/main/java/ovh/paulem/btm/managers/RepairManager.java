@@ -12,6 +12,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import ovh.paulem.btm.utils.ExperienceUtils;
+import ovh.paulem.btm.utils.MathUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,22 +75,25 @@ public class RepairManager {
     }
 
     public void repairItem(Player player, ItemStack item, boolean playSound, boolean playParticle, boolean isAutoRepair){
-        double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
-        int playerXP = ExperienceManager.getPlayerXP(player);
+        int playerXP = ExperienceUtils.getPlayerXP(player);
 
         int itemDamages = damageManager.getDamage(item);
 
-        int expValue = config.getInt("expValue", 20);
+        String expValueConfig = config.getString("expValue", "20");
+        int expValue = (int) MathUtils.evaluate(expValueConfig.replace("%exp%", "x"), player);
+
+        double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
+
         int autoRepairExpValue = config.getInt("auto-repair-config.expConsumed", 20);
 
         if (playerXP >= 30 && itemDamages >= expValue * ratio) {
             damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, ratio));
-            if(isAutoRepair) ExperienceManager.changePlayerExp(player, -autoRepairExpValue);
-            else ExperienceManager.changePlayerExp(player, -expValue);
+            if(isAutoRepair) ExperienceUtils.changePlayerExp(player, -autoRepairExpValue);
+            else ExperienceUtils.changePlayerExp(player, -expValue);
         } else if (playerXP >= expValue/10) {
             damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, 10, ratio));
-            if(isAutoRepair) ExperienceManager.changePlayerExp(player, -autoRepairExpValue/10);
-            else ExperienceManager.changePlayerExp(player, -expValue/10);
+            if(isAutoRepair) ExperienceUtils.changePlayerExp(player, -autoRepairExpValue/10);
+            else ExperienceUtils.changePlayerExp(player, -expValue/10);
         } else return;
 
         // Should play sound?
@@ -107,11 +112,12 @@ public class RepairManager {
 
     public boolean canRepairItem(Player player, ItemStack item){
         double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
-        int playerXP = ExperienceManager.getPlayerXP(player);
+        int playerXP = ExperienceUtils.getPlayerXP(player);
 
         int itemDamages = damageManager.getDamage(item);
 
-        int expValue = config.getInt("expValue", 20);
+        String expValueConfig = config.getString("expValue", "20");
+        int expValue = (int) MathUtils.evaluate(expValueConfig.replace("%exp%", "x"), player);
 
         return (playerXP >= 30 && itemDamages >= expValue * ratio) || (playerXP >= expValue / 10);
     }

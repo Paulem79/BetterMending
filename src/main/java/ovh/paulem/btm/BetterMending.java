@@ -14,6 +14,7 @@ import ovh.paulem.btm.managers.RepairManager;
 import ovh.paulem.btm.damage.NewerDamage;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import ovh.paulem.btm.utils.PluginUtils;
 import ovh.paulem.btm.versions.Versioning;
 
 public class BetterMending extends JavaPlugin {
@@ -29,11 +30,11 @@ public class BetterMending extends JavaPlugin {
         }
 
         saveDefaultConfig();
-        FileConfiguration config = getConfig();
-
         new ConfigManager(this).migrate();
 
         playerDataConfig = new PlayerDataConfig(this);
+
+        FileConfiguration config = getConfig();
 
         final DamageManager damageManager = Versioning.isPost17() ? new NewerDamage() : new LegacyDamage();
 
@@ -61,6 +62,8 @@ public class BetterMending extends JavaPlugin {
         if(config.getBoolean("bstat", true)){
             new Metrics(this, 21472);
         }
+
+        PluginUtils.reloadConfig(this);
     }
 
     @Override

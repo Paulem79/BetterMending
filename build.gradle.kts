@@ -1,4 +1,5 @@
 import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
+import ovh.paulem.buildscript.ParseGItHubActionChangelog
 import proguard.gradle.ProGuardTask
 
 plugins {
@@ -22,7 +23,7 @@ buildscript {
 }
 
 group = "ovh.paulem.btm"
-version = "2.6.6.1"
+version = "2.6.7"
 
 // ------------------------ REPOSITORIES ------------------------
 repositories {
@@ -62,6 +63,8 @@ dependencies {
 
     compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:26.+")
+
+    implementation("net.objecthunter:exp4j:0.4.8")
 }
 
 // ------------------------ PROGUARD ------------------------
@@ -189,12 +192,12 @@ tasks.modrinth {
 }
 
 modrinth {
-    token.set(providers.gradleProperty("MODRINTH_TOKEN").getOrElse(""))
+    token.set(System.getenv("MODRINTH_TOKEN"))
     projectId.set("vdNwyPFz")
     versionNumber.set(version.toString())
     versionName.set("Better Mending $version")
     versionType.set("release")
-    changelog.set("[Changelog](https://github.com/Paulem79/BetterThanMending-Spigot/commit/c394d55cd6a29776f47eeb2cda1f8ce47249c466)".replace("\n", "<br>"))
+    changelog.set(ParseGItHubActionChangelog.getChangelog())
     uploadFile.set(tasks.shadowJar)
     gameVersions.addAll(listOf("1.21.4", "1.21.3", "1.21.2", "1.21.1", "1.21", "1.20.6", "1.20.5", "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17", "1.16.5", "1.16.4", "1.16.3", "1.16.2", "1.16.1", "1.16", "1.15.2", "1.15.1", "1.15", "1.14.4", "1.14.3", "1.14.2", "1.14.1", "1.14", "1.13.2", "1.13.1", "1.13", "1.12.2", "1.12.1", "1.12", "1.11.2", "1.11.1", "1.11", "1.10.2", "1.10.1", "1.10", "1.9.4", "1.9.3", "1.9.2", "1.9.1", "1.9"))
     loaders.addAll(listOf("bukkit", "folia", "paper", "purpur", "spigot"))
