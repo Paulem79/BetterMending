@@ -68,6 +68,9 @@ jobs:
           name: Artifacts
           path: build/libs/
 
+      - name: 🆙 Grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: ⬆️ Upload to Modrinth
         run: ./gradlew modrinth
         env:
