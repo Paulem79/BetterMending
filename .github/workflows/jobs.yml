@@ -3,20 +3,22 @@
 # certain platforms or Java versions, and provides a first line of defence
 # against bad commits.
 
-name: build
+name: ✨ Jobs
 on: [pull_request, push]
 
 jobs:
   build:
+    name: 🔨 Build
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
-      - name: checkout repository
+      - name: ✅ Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/cache@v4
+      - name: 🪄 Cache gradle
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -26,30 +28,37 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle0-
 
-      - name: validate gradle wrapper
+      - name: ✅ Validate gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
 
-      - name: setup jdk 17
+      - name: 🛠️ Setup jdk 17
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
           java-package: jdk
 
-      - name: Grant execute permission for gradlew
+      - name: 🆙 Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: build
+      - name: 🔨 Build project
         run: ./gradlew build
 
-      - name: upload to modrinth
+  publish:
+    name: 🚀 Publish
+    runs-on: ubuntu-latest
+    permissions: write-all
+    needs: build
+    if: success() && github.ref == 'refs/heads/master'
+    steps:
+      - name: ⬆️ Upload to Modrinth
         run: ./gradlew modrinth
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_UPLOAD_TOKEN }}
           GITHUB_EVENT_RAW_PATH: ${{ github.event_path }}
         continue-on-error: true
 
-      - name: Generate as development build
+      - name: 🔁 Generate as development build
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -59,7 +68,7 @@ jobs:
           files: |
             build/libs/*.jar
 
-      - name: capture build artifacts
+      - name: ✅ Capture build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Artifacts
