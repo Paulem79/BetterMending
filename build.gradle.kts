@@ -197,7 +197,7 @@ modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
     projectId.set("vdNwyPFz")
     versionNumber.set(project.version.toString())
-    versionName.set("Better Mending $project.version")
+    versionName.set("Better Mending ${project.version}")
     versionType.set("release")
     changelog.set(ParseGItHubActionChangelog.getChangelog())
     uploadFile.set(tasks.shadowJar.get().archiveFile.get().asFile)
