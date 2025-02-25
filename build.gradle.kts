@@ -1,7 +1,6 @@
 import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
 import ovh.paulem.buildscript.ParseGItHubActionChangelog
 import proguard.gradle.ProGuardTask
-import java.io.ByteArrayOutputStream
 
 plugins {
     id("java")

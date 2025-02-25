@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     needs: build
-    if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/tags/2.6.7')
+    if: success() && github.ref == 'refs/heads/master'
     steps:
       - name: ✅ Checkout repository
         uses: actions/checkout@v4
