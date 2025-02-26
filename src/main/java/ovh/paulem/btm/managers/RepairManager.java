@@ -4,7 +4,7 @@ import com.github.Anon8281.universalScheduler.UniversalRunnable;
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import ovh.paulem.btm.BetterMending;
-import ovh.paulem.btm.damage.DamageManager;
+import ovh.paulem.btm.versions.damage.DamageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -24,14 +24,14 @@ public class RepairManager {
     private FileConfiguration config;
     private final TaskScheduler scheduler;
 
-    private final DamageManager damageManager;
+    private final DamageHandler damageHandler;
     private final ParticleManager particleManager;
 
-    public RepairManager(BetterMending plugin, FileConfiguration config, DamageManager damageManager){
+    public RepairManager(BetterMending plugin, FileConfiguration config, DamageHandler damageHandler){
         this.config = config;
         this.scheduler = UniversalScheduler.getScheduler(plugin);
 
-        this.damageManager = damageManager;
+        this.damageHandler = damageHandler;
         this.particleManager = new ParticleManager(plugin, config);
     }
 
@@ -49,8 +49,8 @@ public class RepairManager {
                                     i.getItemMeta() != null &&
                                     i.getType() != Material.AIR &&
                                     i.containsEnchantment(Enchantment.MENDING) &&
-                                    damageManager.isDamageable(i) &&
-                                    damageManager.hasDamage(i)
+                                    damageHandler.isDamageable(i) &&
+                                    damageHandler.hasDamage(i)
                             ).collect(Collectors.toList());
 
                     if(!damageables.isEmpty()) {
@@ -77,7 +77,7 @@ public class RepairManager {
     public void repairItem(Player player, ItemStack item, boolean playSound, boolean playParticle, boolean isAutoRepair){
         int playerXP = ExperienceUtils.getPlayerXP(player);
 
-        int itemDamages = damageManager.getDamage(item);
+        int itemDamages = damageHandler.getDamage(item);
 
         String expValueConfig = config.getString("expValue", "20");
         int expValue = (int) MathUtils.evaluate(expValueConfig.replace("%exp%", "x"), player);
@@ -87,11 +87,11 @@ public class RepairManager {
         int autoRepairExpValue = config.getInt("auto-repair-config.expConsumed", 20);
 
         if (playerXP >= 30 && itemDamages >= expValue * ratio) {
-            damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, ratio));
+            damageHandler.setDamage(item, DamageHandler.getDamageCalculation(itemDamages, expValue, ratio));
             if(isAutoRepair) ExperienceUtils.changePlayerExp(player, -autoRepairExpValue);
             else ExperienceUtils.changePlayerExp(player, -expValue);
         } else if (playerXP >= expValue/10) {
-            damageManager.setDamage(item, DamageManager.getDamageCalculation(itemDamages, expValue, 10, ratio));
+            damageHandler.setDamage(item, DamageHandler.getDamageCalculation(itemDamages, expValue, 10, ratio));
             if(isAutoRepair) ExperienceUtils.changePlayerExp(player, -autoRepairExpValue/10);
             else ExperienceUtils.changePlayerExp(player, -expValue/10);
         } else return;
@@ -114,7 +114,7 @@ public class RepairManager {
         double ratio = item.getEnchantmentLevel(Enchantment.MENDING) * config.getDouble("ratio", 2.0);
         int playerXP = ExperienceUtils.getPlayerXP(player);
 
-        int itemDamages = damageManager.getDamage(item);
+        int itemDamages = damageHandler.getDamage(item);
 
         String expValueConfig = config.getString("expValue", "20");
         int expValue = (int) MathUtils.evaluate(expValueConfig.replace("%exp%", "x"), player);

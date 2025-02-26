@@ -1,6 +1,6 @@
 package ovh.paulem.btm.listeners.extendables;
 
-import ovh.paulem.btm.damage.DamageManager;
+import ovh.paulem.btm.versions.damage.DamageHandler;
 import ovh.paulem.btm.managers.CooldownManager;
 import ovh.paulem.btm.managers.RepairManager;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,14 +14,14 @@ public class ManagersListener implements Listener {
     private static final List<ManagersListener> MANAGERS_LISTENERS = new ArrayList<>();
 
     protected FileConfiguration config;
-    protected final DamageManager damageManager;
+    protected final DamageHandler damageHandler;
     protected final RepairManager repairManager;
     protected CooldownManager cooldownManager;
 
-    public ManagersListener(@NotNull FileConfiguration config, DamageManager damageManager, RepairManager repairManager) {
+    public ManagersListener(@NotNull FileConfiguration config, DamageHandler damageHandler, RepairManager repairManager) {
         this.config = config;
 
-        this.damageManager = damageManager;
+        this.damageHandler = damageHandler;
         this.repairManager = repairManager;
         this.cooldownManager = new CooldownManager(config.getInt("cooldown.time", 0));
 

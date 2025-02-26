@@ -1,8 +1,8 @@
-package ovh.paulem.btm.damage;
+package ovh.paulem.btm.versions.damage;
 
 import org.bukkit.inventory.ItemStack;
 
-public class LegacyDamage implements DamageManager {
+public class DamageLegacy implements DamageHandler {
     @Override
     public boolean hasDamage(ItemStack item) {
         return (item.getType().getMaxDurability() - item.getDurability()) < item.getType().getMaxDurability();

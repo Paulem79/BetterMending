@@ -30,4 +30,13 @@ public class Versioning {
         String[] mcParts = version.substring(version.indexOf("MC: ") + 4, version.length() - 1).split("\\.");
         return Integer.parseInt(mcParts[1]) > v || (Integer.parseInt(mcParts[1]) == v && Integer.parseInt(mcParts[2]) > r);
     }
+
+    public static boolean hasPDC() {
+        try {
+            Class.forName("org.bukkit.persistence.PersistentDataContainer");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
 }

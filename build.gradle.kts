@@ -23,7 +23,7 @@ buildscript {
 }
 
 group = "ovh.paulem.btm"
-version = "2.6.7"
+version = "2.7"
 
 // ------------------------ REPOSITORIES ------------------------
 repositories {
@@ -49,10 +49,14 @@ repositories {
 
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
     maven { url = uri("https://oss.sonatype.org/content/repositories/central") }
+    maven("https://repo.extendedclip.com/releases/")
 }
 
 // ------------------------ DEPENDENCIES ------------------------
 dependencies {
+    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("org.jetbrains:annotations:26.+")
+
     implementation("org.bstats:bstats-bukkit:3.+")
     implementation("com.jeff_media:SpigotUpdateChecker:3.+") {
         exclude(group = "com.github.Anon8281", module = "UniversalScheduler")
@@ -61,8 +65,7 @@ dependencies {
     implementation("com.github.Anon8281:UniversalScheduler:0.+")
     implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.+")
 
-    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("org.jetbrains:annotations:26.+")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 
     implementation("net.objecthunter:exp4j:0.4.8")
 }
@@ -129,7 +132,7 @@ tasks.processResources {
 val paperDir = rootDir.resolve("servers").resolve("paper")
 
 listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21.4").forEach { version ->
-    task<LaunchMinecraftServerTask>("paper-$version") {
+    tasks.register<LaunchMinecraftServerTask>("paper-$version") {
         dependsOn("finalizeJar")
 
         doFirst {
@@ -145,7 +148,7 @@ listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21.4").forEach { version ->
 val foliaDir = rootDir.resolve("servers").resolve("folia")
 
 listOf("1.21.4").forEach { version ->
-    task<LaunchMinecraftServerTask>("folia-$version") {
+    tasks.register<LaunchMinecraftServerTask>("folia-$version") {
         dependsOn("finalizeJar")
 
         doFirst {

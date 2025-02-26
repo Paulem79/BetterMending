@@ -1,9 +1,9 @@
-package ovh.paulem.btm.damage;
+package ovh.paulem.btm.versions.damage;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
-public class NewerDamage implements DamageManager {
+public class DamageNewer implements DamageHandler {
     @Override
     public boolean hasDamage(ItemStack item) {
         return ((Damageable) item.getItemMeta()).hasDamage();

@@ -1,6 +1,6 @@
 package ovh.paulem.btm.listeners;
 
-import ovh.paulem.btm.damage.DamageManager;
+import ovh.paulem.btm.versions.damage.DamageHandler;
 import ovh.paulem.btm.listeners.extendables.ManagersListener;
 import ovh.paulem.btm.managers.RepairManager;
 import org.bukkit.Material;
@@ -16,8 +16,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PreventDestroyListener extends ManagersListener {
-    public PreventDestroyListener(FileConfiguration config, DamageManager damageManager, RepairManager repairManager){
-        super(config, damageManager, repairManager);
+    public PreventDestroyListener(FileConfiguration config, DamageHandler damageHandler, RepairManager repairManager){
+        super(config, damageHandler, repairManager);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -58,13 +58,13 @@ public class PreventDestroyListener extends ManagersListener {
 
         if(item.getType() == Material.AIR) return false;
 
-        if(!damageManager.isDamageable(item)) return false;
+        if(!damageHandler.isDamageable(item)) return false;
 
         // Continue if item has Mending, and he's not right-clicking in air
         if(!item.containsEnchantment(Enchantment.MENDING)) return false;
 
         if(!repairManager.canRepairItem(player, item)) return false;
 
-        return damageManager.getDamage(item) == item.getType().getMaxDurability()-1;
+        return damageHandler.getDamage(item) == item.getType().getMaxDurability()-1;
     }
 }

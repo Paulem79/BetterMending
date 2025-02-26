@@ -9,7 +9,7 @@ public class PluginUtils {
         plugin.reloadConfig();
 
         FileConfiguration reloadedConfig = plugin.getConfig();
-        if(plugin.playerDataConfig != null) plugin.playerDataConfig.reload();
+        if(plugin.playerConfigHandler != null) plugin.playerConfigHandler.reload();
         if(plugin.mainRepairManager != null) plugin.mainRepairManager.setConfig(reloadedConfig);
 
         ManagersListener.reloadConfig(reloadedConfig);

@@ -88,9 +88,15 @@ offset:
   y: 0.0
   z: 0.0
 
+## -------- CONFIGURATION --------
+# Override the default plugin choice for data storage.
+# If you want to use the file-based storage instead of persistent data container in 1.14+, set this to true.
+# default: false
+file-based: false
+
 ## -------- MISCELLANEOUS --------
 # Disable or not statistics (help me to make my plugin better!)
 bstat: true
 
 # Please, do not touch!
-version: 11
+version: 12

@@ -1,9 +1,9 @@
-package ovh.paulem.btm.damage;
+package ovh.paulem.btm.versions.damage;
 
 import org.bukkit.inventory.ItemStack;
 import ovh.paulem.btm.utils.MathUtils;
 
-public interface DamageManager {
+public interface DamageHandler {
     boolean hasDamage(ItemStack item);
 
     int getDamage(ItemStack item);
@@ -16,7 +16,7 @@ public interface DamageManager {
     boolean isDamageable(ItemStack item);
 
     static int getDamageCalculation(int itemDamages, int expValue, double ratio) {
-        return DamageManager.getDamageCalculation(itemDamages, expValue, 1, ratio);
+        return DamageHandler.getDamageCalculation(itemDamages, expValue, 1, ratio);
     }
 
     static int getDamageCalculation(int itemDamages, int expValue, int xpDivisor, double ratio) {

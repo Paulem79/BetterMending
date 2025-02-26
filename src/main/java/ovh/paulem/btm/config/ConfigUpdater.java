@@ -82,7 +82,7 @@ public class ConfigUpdater {
             Files.copy(path.toPath(), old.toPath(),
                     StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
             path.delete();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
 
         //Here we re-create the config.
     }
@@ -101,7 +101,7 @@ public class ConfigUpdater {
     public void writeFile(File file, List<String> toWrite) {
         try {
             Files.write(file.toPath(), toWrite, Charsets.ISO_8859_1);
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
     }
 
     public List<String> readFile(File file) {

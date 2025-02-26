@@ -3,23 +3,28 @@ package ovh.paulem.btm;
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
+import org.bukkit.Bukkit;
+import ovh.paulem.btm.addons.BTMPlaceholder;
 import ovh.paulem.btm.commands.CommandBTM;
-import ovh.paulem.btm.config.PlayerDataConfig;
 import ovh.paulem.btm.listeners.MendingUseListener;
 import ovh.paulem.btm.listeners.PreventDestroyListener;
 import ovh.paulem.btm.config.ConfigManager;
-import ovh.paulem.btm.damage.DamageManager;
-import ovh.paulem.btm.damage.LegacyDamage;
+import ovh.paulem.btm.versions.damage.DamageHandler;
+import ovh.paulem.btm.versions.damage.DamageLegacy;
 import ovh.paulem.btm.managers.RepairManager;
-import ovh.paulem.btm.damage.NewerDamage;
+import ovh.paulem.btm.versions.damage.DamageNewer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import ovh.paulem.btm.utils.PluginUtils;
 import ovh.paulem.btm.versions.Versioning;
+import ovh.paulem.btm.versions.playerconfig.PlayerConfigHandler;
+import ovh.paulem.btm.versions.playerconfig.PlayerConfigLegacy;
 
 public class BetterMending extends JavaPlugin {
-    public PlayerDataConfig playerDataConfig;
+    public PlayerConfigHandler playerConfigHandler;
     public RepairManager mainRepairManager;
+    public DamageHandler damageHandler;
 
     @Override
     public void onEnable() {
@@ -32,13 +37,13 @@ public class BetterMending extends JavaPlugin {
         saveDefaultConfig();
         new ConfigManager(this).migrate();
 
-        playerDataConfig = new PlayerDataConfig(this);
-
         FileConfiguration config = getConfig();
 
-        final DamageManager damageManager = Versioning.isPost17() ? new NewerDamage() : new LegacyDamage();
+        playerConfigHandler = PlayerConfigHandler.of(this);
 
-        mainRepairManager = new RepairManager(this, config, damageManager);
+        damageHandler = Versioning.isPost17() ? new DamageNewer() : new DamageLegacy();
+
+        mainRepairManager = new RepairManager(this, config, damageHandler);
 
         final int SPIGOT_RESOURCE_ID = 112248;
         new UpdateChecker(this, UpdateCheckSource.SPIGET, String.valueOf(SPIGOT_RESOURCE_ID))
@@ -47,23 +52,29 @@ public class BetterMending extends JavaPlugin {
                 .setDownloadLink(SPIGOT_RESOURCE_ID)
                 .checkNow(); // And check right now
 
-        getServer().getPluginManager().registerEvents(new MendingUseListener(config, damageManager, mainRepairManager, playerDataConfig), this);
-        getServer().getPluginManager().registerEvents(new PreventDestroyListener(config, damageManager, mainRepairManager), this);
+        getServer().getPluginManager().registerEvents(new MendingUseListener(config, damageHandler, mainRepairManager, playerConfigHandler), this);
+        getServer().getPluginManager().registerEvents(new PreventDestroyListener(config, damageHandler, mainRepairManager), this);
 
-        final CommandBTM commandBTM = new CommandBTM(this, config.getInt("version", 0), playerDataConfig);
+        final CommandBTM commandBTM = new CommandBTM(this, config.getInt("version", 0), playerConfigHandler);
         getCommand("btm").setExecutor(commandBTM);
         getCommand("btm").setTabCompleter(commandBTM);
 
-        getLogger().info("Enabled!");
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new BTMPlaceholder(this).register();
+        }
 
         if(config.getBoolean("auto-repair", false))
             mainRepairManager.initAutoRepair();
 
         if(config.getBoolean("bstat", true)){
-            new Metrics(this, 21472);
+            Metrics metrics = new Metrics(this, 21472);
+            metrics.addCustomChart(new SimplePie("file_based_config", () -> String.valueOf(playerConfigHandler instanceof PlayerConfigLegacy)));
+            metrics.addCustomChart(new SimplePie("auto_repair", () -> String.valueOf(config.getBoolean("auto-repair", false))));
         }
 
         PluginUtils.reloadConfig(this);
+
+        getLogger().info("Enabled!");
     }
 
     @Override

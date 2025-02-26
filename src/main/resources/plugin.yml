@@ -1,11 +1,16 @@
 name: BetterMending
 main: ovh.paulem.btm.BetterMending
 version: ${version}
-website: paulem79.github.io
+website: paulem.ovh
 author: Paulem
+prefix: BetterMending
+database: false
 description: A small quality of life tweak to the Mending enchantment
 api-version: 1.13
 folia-supported: true
+
+softdepend:
+  - PlaceholderAPI
 
 commands:
   btm:

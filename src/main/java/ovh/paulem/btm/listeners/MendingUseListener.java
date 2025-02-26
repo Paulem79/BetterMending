@@ -1,8 +1,7 @@
 package ovh.paulem.btm.listeners;
 
 import org.bukkit.GameMode;
-import ovh.paulem.btm.config.PlayerDataConfig;
-import ovh.paulem.btm.damage.DamageManager;
+import ovh.paulem.btm.versions.damage.DamageHandler;
 import ovh.paulem.btm.listeners.extendables.DataConfigManagersListener;
 import ovh.paulem.btm.managers.RepairManager;
 import org.bukkit.ChatColor;
@@ -17,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import ovh.paulem.btm.versions.playerconfig.PlayerConfigHandler;
 import ovh.paulem.btm.versions.sounds.SoundsHandler;
 
 import java.time.Duration;
@@ -30,8 +30,8 @@ public class MendingUseListener extends DataConfigManagersListener {
 
     private final Map<UUID, Integer> cooldownUses = new HashMap<>();
 
-    public MendingUseListener(@NotNull FileConfiguration config, DamageManager damageManager, RepairManager repairManager, PlayerDataConfig playerDataConfig) {
-        super(config, damageManager, repairManager, playerDataConfig);
+    public MendingUseListener(@NotNull FileConfiguration config, DamageHandler damageHandler, RepairManager repairManager, PlayerConfigHandler playerDataConfig) {
+        super(config, damageHandler, repairManager, playerDataConfig);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -42,13 +42,13 @@ public class MendingUseListener extends DataConfigManagersListener {
         if(!player.hasPermission("btm.use") ||
                 Arrays.asList(GameMode.SPECTATOR, GameMode.CREATIVE).contains(player.getGameMode())) return;
 
-        if(!playerDataConfig.getPlayerOrDefault(player, true)) return;
+        if(!playerConfigHandler.getPlayerOrCreate(player, true)) return;
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if(item.getType() == Material.AIR) return;
 
-        if(!damageManager.isDamageable(item)) return;
+        if(!damageHandler.isDamageable(item)) return;
 
         // Continue if item has Mending, the player is sneaking, and he's right-clicking in air
         if(!player.isSneaking() ||
@@ -56,7 +56,7 @@ public class MendingUseListener extends DataConfigManagersListener {
                 e.getAction() != Action.RIGHT_CLICK_AIR) return;
 
         // If it doesn't have any damage, return
-        if(!damageManager.hasDamage(item)) return;
+        if(!damageHandler.hasDamage(item)) return;
 
         UUID playerId = player.getUniqueId();
 

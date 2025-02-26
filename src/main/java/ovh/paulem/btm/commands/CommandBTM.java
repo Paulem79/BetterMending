@@ -1,25 +1,24 @@
 package ovh.paulem.btm.commands;
 
 import ovh.paulem.btm.BetterMending;
-import ovh.paulem.btm.config.PlayerDataConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ovh.paulem.btm.utils.PluginUtils;
+import ovh.paulem.btm.versions.playerconfig.PlayerConfigHandler;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 public class CommandBTM implements TabExecutor {
     public final BetterMending plugin;
     public final int configVersion;
-    public final PlayerDataConfig playerDataConfig;
+    public final PlayerConfigHandler playerDataConfig;
     public final String pluginVersion;
 
-    public CommandBTM(BetterMending plugin, int configVersion, PlayerDataConfig playerDataConfig) {
+    public CommandBTM(BetterMending plugin, int configVersion, PlayerConfigHandler playerDataConfig) {
         this.plugin = plugin;
         this.configVersion = configVersion;
         this.playerDataConfig = playerDataConfig;
@@ -31,14 +30,7 @@ public class CommandBTM implements TabExecutor {
         if((args.length == 0 || args[0].equalsIgnoreCase("toggle")) && sender instanceof Player) {
             Player player = (Player) sender;
 
-            boolean enabled;
-            try {
-                enabled = playerDataConfig.getPlayerOrCreate(player, true);
-
-                enabled = playerDataConfig.setPlayer(player, !enabled);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            boolean enabled = playerDataConfig.setPlayer(player, !playerDataConfig.getPlayerOrCreate(player, true));
 
             player.sendMessage("Mending's ability has been successfully " + (enabled ? ChatColor.GREEN + "enabled" : ChatColor.RED + "disabled") + " !");
 
