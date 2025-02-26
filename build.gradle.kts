@@ -39,10 +39,6 @@ repositories {
         }
     }
     maven {
-        name = "paulemReleases"
-        url = uri("https://maven.paulem.ovh/releases")
-    }
-    maven {
         name = "jeffMediaPublic"
         url = uri("https://repo.jeff-media.com/public")
     }
