@@ -23,7 +23,7 @@ buildscript {
 }
 
 group = "ovh.paulem.btm"
-version = "2.7"
+version = "2.7.1"
 
 // ------------------------ REPOSITORIES ------------------------
 repositories {

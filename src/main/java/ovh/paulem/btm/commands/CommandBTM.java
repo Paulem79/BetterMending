@@ -56,6 +56,6 @@ public class CommandBTM implements TabExecutor {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return Arrays.asList("toggle", "version");
+        return Arrays.asList("toggle", "reload");
     }
 }
