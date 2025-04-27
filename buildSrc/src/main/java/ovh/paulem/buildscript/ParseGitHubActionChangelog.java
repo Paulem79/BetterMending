@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class ParseGItHubActionChangelog {
+public class ParseGitHubActionChangelog {
 
     public static String getChangelog() throws Throwable {
         final String path = System.getenv("GITHUB_EVENT_RAW_PATH");
