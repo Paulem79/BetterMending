@@ -7,7 +7,7 @@ name: 🚀 Publish
 
 jobs:
   build:
-    uses: Paulem79/BetterThanMending-Spigot/.github/workflows/build.yml@master
+    uses: ./.github/workflows/build.yml
 
   publish:
     name: 🚀 Publish
