@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,9 +20,9 @@ public class ParseGitHubActionChangelog {
         StringBuilder builder = new StringBuilder();
         builder.append("This version is uploaded automatically by GitHub Actions.  \n\n")
                 .append("Changelog:  \n");
-        final JsonArray commits = jsonObject.getAsJsonArray("commits");
-        if (commits.isEmpty()) {
-            builder.append("No changes detected. \n");
+        @Nullable final JsonArray commits = jsonObject.getAsJsonArray("commits");
+        if (commits == null || commits.isEmpty()) {
+            builder.append("Changes available on Github. \n");
         } else {
             for (JsonElement commit : commits) {
                 JsonObject object = commit.getAsJsonObject();
