@@ -3,14 +3,11 @@
 # certain platforms or Java versions, and provides a first line of defense
 # against bad commits.
 
-name: 🔨 Build
+name: ✨ Jobs
 on:
-  workflow_call:
   push:
     branches:
       - master
-    tags:
-      - dev
   pull_request:
 
 jobs:
@@ -38,11 +35,11 @@ jobs:
       - name: ✅ Validate gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
 
-      - name: 🛠️ Setup jdk 17
+      - name: 🛠️ Setup jdk 8
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 17
+          java-version: 8
           java-package: jdk
 
       - name: 🆙 Grant execute permission for gradlew
@@ -56,3 +53,43 @@ jobs:
         with:
           name: Artifacts
           path: build/libs/
+
+  publish:
+    name: 🚀 Publish
+    runs-on: ubuntu-latest
+    permissions: write-all
+    needs: build
+
+    if: contains(github.event.head_commit.message, 'PUBLISH')
+
+    steps:
+      - name: ✅ Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ✅ Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: Artifacts
+          path: build/libs/
+
+      - name: 🆙 Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: ⬆️ Upload to Modrinth
+        run: ./gradlew modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_UPLOAD_TOKEN }}
+          GITHUB_EVENT_RAW_PATH: ${{ github.event_path }}
+        continue-on-error: true
+
+      - name: 🔁 Generate as development build
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "dev"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            build/libs/*.jar
