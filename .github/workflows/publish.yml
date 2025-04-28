@@ -1,7 +1,7 @@
 on:
-  push:
-    branches:
-      - released
+  release:
+    types:
+      - published
 
 name: 🚀 Publish
 
