@@ -1,7 +1,7 @@
 on:
-  create:
-    tags:
-        - '*'
+  push:
+    branches:
+      - released
 
 name: 🚀 Publish
 
