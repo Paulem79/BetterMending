@@ -13,7 +13,8 @@ public class NewGithubChangelog {
 
             GHRepository repository = gitHub.getRepository("Paulem79/BetterMending");
 
-            StringBuilder changelog = new StringBuilder("Changelog:");
+            StringBuilder changelog = new StringBuilder("This version is uploaded automatically by GitHub Actions.")
+                    .append("\n\nChangelog:");
 
             List<GHCommit> commits = repository.listCommits().toList();
 
