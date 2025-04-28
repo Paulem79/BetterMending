@@ -25,7 +25,7 @@ public class NewGithubChangelog {
                 String hash = commit.getSHA1();
                 String commit_url = commit.getHtmlUrl().toString();
 
-                if (message.contains("PUBLISH") && getWorkflowRun(repository, commit) == GHWorkflowRun.Status.COMPLETED && commits.indexOf(commit) != 0) {
+                if (message.contains("PUBLISH") && getWorkflowRun(repository, commit) == GHWorkflowRun.Conclusion.SUCCESS && commits.indexOf(commit) != 0) {
                     lastPublish = commit;
                     break;
                 }
@@ -57,13 +57,13 @@ public class NewGithubChangelog {
         }
     }
 
-    private static GHWorkflowRun.Status getWorkflowRun(GHRepository repository, GHCommit commit) throws IOException {
+    private static GHWorkflowRun.Conclusion getWorkflowRun(GHRepository repository, GHCommit commit) throws IOException {
         List<GHWorkflowRun> runs = repository.queryWorkflowRuns().headSha(commit.getSHA1()).list().toList();
 
         if (runs.isEmpty()) {
-            return GHWorkflowRun.Status.FAILURE;
+            return GHWorkflowRun.Conclusion.FAILURE;
         }
 
-        return runs.get(0).getStatus();
+        return runs.get(0).getConclusion();
     }
 }
