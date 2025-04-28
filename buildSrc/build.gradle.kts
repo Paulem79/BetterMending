@@ -15,9 +15,7 @@ repositories {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation("com.google.code.gson:gson:2.13.1")
-    implementation("org.apache.commons:commons-lang3:3.17.0")
+    implementation("org.kohsuke:github-api:1.327")
 }
 
 
