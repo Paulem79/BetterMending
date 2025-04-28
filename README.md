@@ -1,7 +1,5 @@
 # BetterMending
 
----
-
 A small quality of life tweak to the Mending enchantment. Port of the original mod by legobmw99.
 Compatible with Paper, Folia, Spigot, and other Bukkit forks.
 
