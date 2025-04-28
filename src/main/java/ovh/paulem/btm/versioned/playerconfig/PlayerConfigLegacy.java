@@ -1,4 +1,4 @@
-package ovh.paulem.btm.versions.playerconfig;
+package ovh.paulem.btm.versioned.playerconfig;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -10,9 +10,7 @@ import java.io.IOException;
 public class PlayerConfigLegacy extends PlayerConfigHandler {
     protected final YamlConfiguration data;
 
-    PlayerConfigLegacy(BetterMending plugin) {
-        super(plugin);
-
+    PlayerConfigLegacy() {
         this.data = YamlConfiguration.loadConfiguration(dataFile);
     }
 
@@ -29,7 +27,7 @@ public class PlayerConfigLegacy extends PlayerConfigHandler {
         try {
             this.data.save(dataFile);
         } catch (IOException e) {
-            plugin.getLogger().throwing(PlayerConfigLegacy.class.getName(), "setPlayer", e);
+            BetterMending.getInstance().getLogger().throwing(PlayerConfigLegacy.class.getName(), "setPlayer", e);
         }
 
         return enabled;
@@ -40,7 +38,7 @@ public class PlayerConfigLegacy extends PlayerConfigHandler {
         try {
             this.data.load(dataFile);
         } catch (Exception e) {
-            plugin.getLogger().throwing(PlayerConfigLegacy.class.getName(), "reload", e);
+            BetterMending.getInstance().getLogger().throwing(PlayerConfigLegacy.class.getName(), "reload", e);
         }
     }
 }

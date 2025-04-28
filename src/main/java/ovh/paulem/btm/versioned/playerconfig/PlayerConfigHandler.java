@@ -1,4 +1,4 @@
-package ovh.paulem.btm.versions.playerconfig;
+package ovh.paulem.btm.versioned.playerconfig;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import ovh.paulem.btm.BetterMending;
-import ovh.paulem.btm.versions.Versioning;
+import ovh.paulem.btm.versioned.Versioning;
 
 import java.io.File;
 import java.util.HashMap;
@@ -15,18 +15,13 @@ import java.util.Set;
 import java.util.UUID;
 
 public abstract class PlayerConfigHandler {
-    protected final BetterMending plugin;
     protected static File dataFile;
-
-    PlayerConfigHandler(BetterMending plugin) {
-        this.plugin = plugin;
-    }
 
     Map<UUID, Boolean> migrate() {
         Map<UUID, Boolean> toMigrate = new HashMap<>();
 
         if(dataFile.exists()) {
-            plugin.getLogger().info("Migrating " + dataFile.getName() + " to PDC...");
+            BetterMending.getInstance().getLogger().info("Migrating " + dataFile.getName() + " to PDC...");
 
             YamlConfiguration data = YamlConfiguration.loadConfiguration(dataFile);
 
@@ -61,13 +56,13 @@ public abstract class PlayerConfigHandler {
         boolean hasPDC = Versioning.hasPDC();
 
         if (fileBased) { // If the file-based option is enabled, use the file-based system
-            playerConfigHandler = new PlayerConfigLegacy(plugin);
+            playerConfigHandler = new PlayerConfigLegacy();
         } else if (dataFileExists && hasPDC) { // If the data file exists and the server supports PDC, migrate the data file to PDC
-            playerConfigHandler = new PlayerConfigNewer(plugin, new PlayerConfigLegacy(plugin).migrate());
+            playerConfigHandler = new PlayerConfigNewer(new PlayerConfigLegacy().migrate());
         } else if (hasPDC) { // If the server supports PDC, use the PDC system
-            playerConfigHandler = new PlayerConfigNewer(plugin);
+            playerConfigHandler = new PlayerConfigNewer();
         } else { // If the server doesn't support PDC, use the file-based system
-            playerConfigHandler = new PlayerConfigLegacy(plugin);
+            playerConfigHandler = new PlayerConfigLegacy();
         }
 
         return playerConfigHandler;

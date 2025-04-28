@@ -1,14 +1,14 @@
-package ovh.paulem.btm.addons;
+package ovh.paulem.btm.compat;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import ovh.paulem.btm.BetterMending;
 
-public class BTMPlaceholder extends PlaceholderExpansion {
+public class BTMPlaceholderCompat extends PlaceholderExpansion {
     private final BetterMending instance;
 
-    public BTMPlaceholder(BetterMending instance){
+    public BTMPlaceholderCompat(BetterMending instance){
         this.instance = instance;
     }
 
@@ -93,7 +93,7 @@ public class BTMPlaceholder extends PlaceholderExpansion {
         }
 
         if(identifier.equals("enabled")){
-            return Boolean.toString(instance.playerConfigHandler.getPlayerOrDefault(player, true));
+            return Boolean.toString(BetterMending.getPlayerConfig().getPlayerOrDefault(player, true));
         }
 
         return null;

@@ -4,7 +4,6 @@ version: ${version}
 website: paulem.ovh
 author: Paulem
 prefix: BetterMending
-database: false
 description: A small quality of life tweak to the Mending enchantment
 api-version: 1.13
 folia-supported: true
@@ -14,7 +13,7 @@ softdepend:
 
 commands:
   btm:
-    usage: /btm [toggle, reload]
+    usage: /btm [toggle, reload, version]
     description: Enable or disable the Mending skill
     permission: btm.commands.btm
     aliases:
@@ -23,10 +22,10 @@ commands:
 
 permissions:
   btm.commands.btm:
-    description: Control the command /btm used to enable or disable the Mending skill
+    description: Controls the command /btm used to enable or disable the Mending skill
     default: true
   btm.commands.reload:
-    description: Control the command /btm reload
+    description: Controls the command /btm reload
     default: op
   btm.use:
     description: Allows to use the mending ability

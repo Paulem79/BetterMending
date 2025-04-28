@@ -82,11 +82,23 @@ color:
   green: 238
   blue: 144
 
-# The offset of particles, from the player Eyes location, can be a negative value
+# The offset of particles, from the player feet location. Can be a negative value
 offset:
   x: 0.0
   y: 0.0
   z: 0.0
+
+## -------- BLACKLISTS --------
+
+# Players who are not allowed to use the mending ability
+blacklisted-players:
+  # Example:
+  # - "radstevee"
+
+# Items that are not allowed to be repaired
+blacklisted-items:
+  # Example:
+  # - "DIAMOND_SWORD"
 
 ## -------- CONFIGURATION --------
 # Override the default plugin choice for data storage.
@@ -99,4 +111,4 @@ file-based: false
 bstat: true
 
 # Please, do not touch!
-version: 12
+version: 13

@@ -1,4 +1,4 @@
-package ovh.paulem.btm.versions.damage;
+package ovh.paulem.btm.versioned.damage;
 
 import org.bukkit.inventory.ItemStack;
 

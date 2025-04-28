@@ -1,10 +1,8 @@
 package ovh.paulem.btm.listeners;
 
-import ovh.paulem.btm.versions.damage.DamageHandler;
+import ovh.paulem.btm.BetterMending;
 import ovh.paulem.btm.listeners.extendables.ManagersListener;
-import ovh.paulem.btm.managers.RepairManager;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,9 +14,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PreventDestroyListener extends ManagersListener {
-    public PreventDestroyListener(FileConfiguration config, DamageHandler damageHandler, RepairManager repairManager){
-        super(config, damageHandler, repairManager);
-    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPreventDestroyBlock(BlockBreakEvent e){
@@ -50,7 +45,7 @@ public class PreventDestroyListener extends ManagersListener {
     }
 
     public boolean isPreventNeeded(Player player){
-        if(!config.getBoolean("prevent-destroy", false)) return false;
+        if(!BetterMending.getConf().getBoolean("prevent-destroy", false)) return false;
 
         if(!player.hasPermission("btm.use")) return false;
 

@@ -53,7 +53,7 @@ public class ConfigUpdater {
     }
 
     public void updateConfig() {
-        plugin.getLogger().info("Updating the config!");
+        plugin.getLogger().info("Updating your config...");
 
         List<String> newLines = readInsideFile("/config.yml");
 
@@ -71,7 +71,7 @@ public class ConfigUpdater {
         writeFile(path, newLines);
         plugin.getLogger().info("Your configuration has been updated! You can find more informations about new option on the plugin resource page!");
 
-        PluginUtils.reloadConfig(plugin);
+        PluginUtils.reloadConfig();
     }
 
     private void deprecateConfig() {

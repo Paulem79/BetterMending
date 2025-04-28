@@ -1,4 +1,4 @@
-package ovh.paulem.btm.versions.playerconfig;
+package ovh.paulem.btm.versioned.playerconfig;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,22 +14,21 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PlayerConfigNewer extends PlayerConfigHandler {
-    private final NamespacedKey playerConfigKey = new NamespacedKey(plugin, "playerConfig");
+    private final NamespacedKey playerConfigKey = new NamespacedKey(BetterMending.getInstance(), "playerConfig");
     private static final PersistentDataType<Byte, Boolean> type = PersistentDataType.BOOLEAN;
 
     @Nullable
     private YamlConfiguration data = null;
-    private Map<UUID, Boolean> toMigrate = new HashMap<>();
+    private final Map<UUID, Boolean> toMigrate;
 
-    PlayerConfigNewer(BetterMending plugin) {
-        super(plugin);
+    public PlayerConfigNewer() {
+        this.toMigrate = new HashMap<>();
     }
 
-    PlayerConfigNewer(BetterMending plugin, Map<UUID, Boolean> toMigrate) {
-        this(plugin);
+    PlayerConfigNewer(Map<UUID, Boolean> toMigrate) {
         this.toMigrate = toMigrate;
 
-        plugin.getServer().getPluginManager().registerEvents(new ConfigMigrationListener(plugin.getConfig(), plugin.damageHandler, plugin.mainRepairManager, this), plugin);
+        BetterMending.getInstance().getServer().getPluginManager().registerEvents(new ConfigMigrationListener(), BetterMending.getInstance());
     }
 
     public void migratePlayer(Player player) {
@@ -41,7 +40,7 @@ public class PlayerConfigNewer extends PlayerConfigHandler {
             data = YamlConfiguration.loadConfiguration(dataFile);
         }
 
-        plugin.getLogger().info(player.getUniqueId().toString());
+        BetterMending.getInstance().getLogger().info(player.getUniqueId().toString());
         if(toMigrate.containsKey(player.getUniqueId())) {
             setPlayer(player, toMigrate.get(player.getUniqueId()));
 
@@ -49,7 +48,7 @@ public class PlayerConfigNewer extends PlayerConfigHandler {
             try {
                 data.save(dataFile);
             } catch (IOException e) {
-                plugin.getLogger().throwing(PlayerConfigNewer.class.getName(), "migratePlayer", e);
+                BetterMending.getInstance().getLogger().throwing(PlayerConfigNewer.class.getName(), "migratePlayer", e);
             }
 
             toMigrate.remove(player.getUniqueId());
@@ -57,7 +56,7 @@ public class PlayerConfigNewer extends PlayerConfigHandler {
 
         if(toMigrate.isEmpty()) {
             PlayerConfigHandler.dataFile.delete();
-            plugin.getLogger().info("Migration complete!");
+            BetterMending.getInstance().getLogger().info("Migration complete!");
         }
     }
 

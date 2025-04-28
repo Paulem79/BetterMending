@@ -7,31 +7,27 @@ import org.bukkit.Color;
 import org.bukkit.Particle;
 import ovh.paulem.btm.BetterMending;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import ovh.paulem.btm.utils.ReflectionUtils;
-import ovh.paulem.btm.versions.Versioning;
+import ovh.paulem.btm.versioned.Versioning;
 
 public class ParticleManager {
-    private final FileConfiguration config;
     private ParticleNativeAPI api;
 
-    public ParticleManager(BetterMending plugin, FileConfiguration config){
-        this.config = config;
-
+    public ParticleManager(){
         try {
-            this.api = ParticleNativeCore.loadAPI(plugin);
+            this.api = ParticleNativeCore.loadAPI(BetterMending.getInstance());
         } catch (ParticleException e) {// optional runtime exception catch
             this.api = null;
         }
     }
 
     public void summonCircle(Player player, int size) {
-        Location location = player.getEyeLocation()
+        Location location = player.getLocation()
                 .add(
-                        config.getDouble("offset.x", 0),
-                        config.getDouble("offset.y", 0),
-                        config.getDouble("offset.z", 0)
+                        BetterMending.getConf().getDouble("offset.x", 0),
+                        BetterMending.getConf().getDouble("offset.y", 0),
+                        BetterMending.getConf().getDouble("offset.z", 0)
                 );
 
         if(location.getWorld() == null) return;
@@ -42,9 +38,9 @@ public class ParticleManager {
             particleLoc.setZ(location.getZ() + Math.sin(d) * size);
 
             Color particleColor = Color.fromRGB(
-                    checkRGB(config.getInt("color.red", 144), 144),
-                    checkRGB(config.getInt("color.green", 238), 238),
-                    checkRGB(config.getInt("color.blue", 144), 144)
+                    checkRGB(BetterMending.getConf().getInt("color.red", 144), 144),
+                    checkRGB(BetterMending.getConf().getInt("color.green", 238), 238),
+                    checkRGB(BetterMending.getConf().getInt("color.blue", 144), 144)
             );
 
             if(Versioning.isIn13()) {

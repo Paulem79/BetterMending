@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ovh.paulem.btm.utils.PluginUtils;
-import ovh.paulem.btm.versions.playerconfig.PlayerConfigHandler;
+import ovh.paulem.btm.versioned.playerconfig.PlayerConfigHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +27,11 @@ public class CommandBTM implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if(sender instanceof ConsoleCommandSender) {
+            sender.sendMessage(ChatColor.BLUE + "Running BetterThanMending " + ChatColor.GOLD + pluginVersion + ChatColor.BLUE + " with config version " + ChatColor.DARK_GREEN + configVersion + ChatColor.BLUE);
+            return true;
+        }
+
         if((args.length == 0 || args[0].equalsIgnoreCase("toggle")) && sender instanceof Player) {
             Player player = (Player) sender;
 
@@ -41,14 +46,14 @@ public class CommandBTM implements TabExecutor {
                 return true;
             }
 
-            PluginUtils.reloadConfig(plugin);
+            PluginUtils.reloadConfig();
 
             sender.sendMessage(ChatColor.GREEN + "Config reloaded!");
 
             return true;
+        } else if (args.length == 1 && args[0].equalsIgnoreCase("version")) {
+            sender.sendMessage(ChatColor.BLUE + "Running BetterThanMending " + ChatColor.GOLD + pluginVersion + ChatColor.BLUE + " with config version " + ChatColor.DARK_GREEN + configVersion + ChatColor.BLUE);
         }
-
-        sender.sendMessage(ChatColor.BLUE + "Running BetterThanMending " + ChatColor.GOLD + pluginVersion + ChatColor.BLUE + " with config version " + ChatColor.DARK_GREEN + configVersion + ChatColor.BLUE);
 
         return true;
     }
@@ -56,6 +61,6 @@ public class CommandBTM implements TabExecutor {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return Arrays.asList("toggle", "reload");
+        return Arrays.asList("toggle", "reload", "version");
     }
 }

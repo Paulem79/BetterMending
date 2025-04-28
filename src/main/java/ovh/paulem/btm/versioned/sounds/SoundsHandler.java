@@ -1,8 +1,8 @@
-package ovh.paulem.btm.versions.sounds;
+package ovh.paulem.btm.versioned.sounds;
 
 import org.bukkit.Sound;
 import org.jetbrains.annotations.Nullable;
-import ovh.paulem.btm.versions.Versioning;
+import ovh.paulem.btm.versioned.Versioning;
 
 public interface SoundsHandler {
     @Nullable Sound getEndermanTeleportSound();

@@ -1,4 +1,4 @@
-package ovh.paulem.btm.versions.sounds;
+package ovh.paulem.btm.versioned.sounds;
 
 import org.bukkit.Sound;
 import org.jetbrains.annotations.Nullable;
