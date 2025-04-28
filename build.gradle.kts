@@ -23,7 +23,7 @@ buildscript {
 }
 
 group = "ovh.paulem.btm"
-version = "2.8"
+version = "2.9"
 
 // ------------------------ REPOSITORIES ------------------------
 repositories {
@@ -45,7 +45,9 @@ repositories {
 
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
     maven { url = uri("https://oss.sonatype.org/content/repositories/central") }
+
     maven("https://repo.extendedclip.com/releases/")
+    maven("https://repo.oraxen.com/releases")
 }
 
 // ------------------------ DEPENDENCIES ------------------------
@@ -62,6 +64,7 @@ dependencies {
     implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.+")
 
     compileOnly("me.clip:placeholderapi:2.11.6")
+    compileOnly("io.th0rgal:oraxen:1.190.0")
 
     implementation("net.objecthunter:exp4j:0.4.8")
 }

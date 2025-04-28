@@ -42,7 +42,7 @@ public class RepairManager {
                     List<ItemStack> damageables = Arrays.stream(player.getInventory().getContents())
                             .filter(i -> i != null &&
                                     i.getItemMeta() != null &&
-                                    !BetterMending.getConfigBlacklist().isBlacklisted(i.getType()) &&
+                                    !BetterMending.getConfigBlacklist().isBlacklisted(i) &&
                                     i.getType() != Material.AIR &&
                                     i.containsEnchantment(Enchantment.MENDING) &&
                                     BetterMending.getDamageHandler().isDamageable(i) &&

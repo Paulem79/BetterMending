@@ -1,16 +1,15 @@
 package ovh.paulem.btm.config;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import ovh.paulem.btm.BetterMending;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ConfigBlacklist {
     private final List<String> blacklistedPlayers;
-    private final List<Material> blacklistedItems;
+    private final List<String> blacklistedItems;
 
     public ConfigBlacklist() {
         blacklistedPlayers = BetterMending.getConf().getStringList("blacklisted-players")
@@ -18,19 +17,25 @@ public class ConfigBlacklist {
                 .map(String::toLowerCase)
                 .collect(Collectors.toList());
 
-        blacklistedItems = BetterMending.getConf().getStringList("blacklisted-items")
-                .stream()
-                .map(s -> Material.getMaterial(s.toUpperCase()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        blacklistedItems = BetterMending.getConf().getStringList("blacklisted-items");
     }
 
     public boolean isBlacklisted(Player player) {
         return blacklistedPlayers.contains(player.getName().toLowerCase());
     }
 
-    // TODO : Add support for Oraxen items
-    public boolean isBlacklisted(Material material) {
-        return blacklistedItems.contains(material);
+    public boolean isBlacklisted(ItemStack stack) {
+        return blacklistedItems
+                .stream()
+                .anyMatch(mat -> mat.equalsIgnoreCase(stack.getType().name()))
+                || BetterMending.getInstance().getOraxenCompat().isBlacklisted(stack);
+    }
+
+    public List<String> getBlacklistedPlayers() {
+        return blacklistedPlayers;
+    }
+
+    public List<String> getBlacklistedItems() {
+        return blacklistedItems;
     }
 }

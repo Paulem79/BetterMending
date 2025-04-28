@@ -96,6 +96,7 @@ blacklisted-players:
   # - "radstevee"
 
 # Items that are not allowed to be repaired
+# Also support Oraxen items (with their name, not their display name)
 blacklisted-items:
   # Example:
   # - "DIAMOND_SWORD"

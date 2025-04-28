@@ -5,8 +5,11 @@ import com.jeff_media.updatechecker.UpdateChecker;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
+import org.bukkit.inventory.ItemStack;
 import ovh.paulem.btm.compat.BTMPlaceholderCompat;
 import ovh.paulem.btm.commands.CommandBTM;
+import ovh.paulem.btm.compat.OraxenCompat;
+import ovh.paulem.btm.compat.OraxenDefaultCompat;
 import ovh.paulem.btm.config.ConfigBlacklist;
 import ovh.paulem.btm.listeners.MendingUseListener;
 import ovh.paulem.btm.listeners.PreventDestroyListener;
@@ -29,6 +32,8 @@ public class BetterMending extends JavaPlugin {
     private RepairManager repairManager;
     private DamageHandler damageHandler;
     private ConfigBlacklist configBlacklist;
+
+    private OraxenDefaultCompat oraxenCompat;
 
     @Override
     public void onEnable() {
@@ -71,6 +76,12 @@ public class BetterMending extends JavaPlugin {
             }
         }
 
+        if(Bukkit.getPluginManager().getPlugin("Oraxen") != null){
+            oraxenCompat = new OraxenCompat();
+        } else {
+            oraxenCompat = new OraxenDefaultCompat();
+        }
+
         if(config.getBoolean("auto-repair", false)) {
             repairManager.initAutoRepair();
         }
@@ -90,6 +101,10 @@ public class BetterMending extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabled! See you later!");
+    }
+
+    public OraxenDefaultCompat getOraxenCompat() {
+        return oraxenCompat;
     }
 
     public static BetterMending getInstance() {

@@ -39,7 +39,7 @@ public class MendingUseListener extends ManagersListener {
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if(item.getType() == Material.AIR || BetterMending.getConfigBlacklist().isBlacklisted(item.getType())) return;
+        if(item.getType() == Material.AIR || BetterMending.getConfigBlacklist().isBlacklisted(item)) return;
 
         if(!damageHandler.isDamageable(item)) return;
 
