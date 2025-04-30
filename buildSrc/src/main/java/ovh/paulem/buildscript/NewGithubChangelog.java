@@ -9,7 +9,8 @@ import java.util.List;
 public class NewGithubChangelog {
     public static String getChangelog() {
         try {
-            GitHub gitHub = new GitHubBuilder().build();
+            GitHub gitHub = new GitHubBuilder()
+                    .build();
 
             GHRepository repository = gitHub.getRepository("Paulem79/BetterMending");
 
@@ -35,13 +36,12 @@ public class NewGithubChangelog {
 
                 changelog
                         .append("\n")
-                        .append("- ")
-                        .append(message)
-                        .append(" [")
+                        .append("- [")
                         .append(hash, 0, 7)
                         .append("](")
                         .append(commit_url)
-                        .append(")");
+                        .append(") ")
+                        .append(message);
             }
 
             if(lastPublish != null) {

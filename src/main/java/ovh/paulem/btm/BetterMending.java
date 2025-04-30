@@ -2,15 +2,13 @@ package ovh.paulem.btm;
 
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
-import org.bstats.bukkit.Metrics;
-import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
-import org.bukkit.inventory.ItemStack;
 import ovh.paulem.btm.compat.BTMPlaceholderCompat;
 import ovh.paulem.btm.commands.CommandBTM;
 import ovh.paulem.btm.compat.OraxenCompat;
 import ovh.paulem.btm.compat.OraxenDefaultCompat;
 import ovh.paulem.btm.config.ConfigBlacklist;
+import ovh.paulem.btm.libs.bstats.Metrics;
 import ovh.paulem.btm.listeners.MendingUseListener;
 import ovh.paulem.btm.listeners.PreventDestroyListener;
 import ovh.paulem.btm.config.ConfigManager;
@@ -89,8 +87,8 @@ public class BetterMending extends JavaPlugin {
         if(config.getBoolean("bstat", true)){
             Metrics metrics = new Metrics(this, 21472);
 
-            metrics.addCustomChart(new SimplePie("file_based_config", () -> String.valueOf(playerConfig instanceof PlayerConfigLegacy)));
-            metrics.addCustomChart(new SimplePie("auto_repair", () -> String.valueOf(config.getBoolean("auto-repair", false))));
+            metrics.addCustomChart(new Metrics.SimplePie("file_based_config", () -> String.valueOf(playerConfig instanceof PlayerConfigLegacy)));
+            metrics.addCustomChart(new Metrics.SimplePie("auto_repair", () -> String.valueOf(config.getBoolean("auto-repair", false))));
         }
 
         PluginUtils.reloadConfig();

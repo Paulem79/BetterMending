@@ -23,7 +23,7 @@ buildscript {
 }
 
 group = "ovh.paulem.btm"
-version = "2.9"
+version = "2.9.1"
 
 // ------------------------ REPOSITORIES ------------------------
 repositories {
@@ -53,15 +53,14 @@ repositories {
 // ------------------------ DEPENDENCIES ------------------------
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("org.jetbrains:annotations:26.+")
+    compileOnly("org.jetbrains:annotations:26.0.2")
 
-    implementation("org.bstats:bstats-bukkit:3.+")
-    implementation("com.jeff_media:SpigotUpdateChecker:3.+") {
+    implementation("com.jeff_media:SpigotUpdateChecker:3.0.4") {
         exclude(group = "com.github.Anon8281", module = "UniversalScheduler")
         exclude(group = "com.jeff_media.updatechecker.universalScheduler")
     }
-    implementation("com.github.Anon8281:UniversalScheduler:0.+")
-    implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.+")
+    implementation("com.github.Anon8281:UniversalScheduler:0.1.6")
+    implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.4.0")
 
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("io.th0rgal:oraxen:1.190.0")
@@ -79,6 +78,10 @@ tasks.register<ProGuardTask>("proguardJar") {
     outjars(file("build/libs/temp-${tasks.shadowJar.get().archiveFileName.get()}"))
 
     finalizedBy("finalizeJar")
+
+    keep("class ovh.paulem.btm.libs.bstats.Metrics")
+    keepclassmembers("class ovh.paulem.btm.libs.bstats.Metrics")
+    keepparameternames()
 }
 
 // Rename the final proguard jar to the original shadowJar name
@@ -103,7 +106,6 @@ tasks.shadowJar {
     exclude("LICENSE.txt")
     exclude("License-ASM.txt")
 
-    relocate("org.bstats", "ovh.paulem.btm.libs.bstats")
     relocate("com.github.fierioziy.particlenativeapi", "ovh.paulem.btm.libs.particleapi")
     relocate("com.jeff_media.updatechecker", "ovh.paulem.btm.libs.updatechecker")
 
