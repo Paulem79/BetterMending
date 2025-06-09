@@ -59,7 +59,7 @@ dependencies {
         exclude(group = "com.github.Anon8281", module = "UniversalScheduler")
         exclude(group = "com.jeff_media.updatechecker.universalScheduler")
     }
-    implementation("com.github.Anon8281:UniversalScheduler:0.1.6")
+    implementation("com.github.Anon8281:UniversalScheduler:0.1.7")
     implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.4.0")
 
     compileOnly("me.clip:placeholderapi:2.11.6")
