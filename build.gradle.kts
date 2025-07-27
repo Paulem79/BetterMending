@@ -6,7 +6,7 @@ plugins {
     id("java")
     id("com.gradleup.shadow") version "9.0.0-rc2"
 
-    id("com.modrinth.minotaur") version "2.8.7"
+    id("com.modrinth.minotaur") version "2.8.8"
 
     id("dev.s7a.gradle.minecraft.server") version "3.2.1"
 }
