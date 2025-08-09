@@ -4,7 +4,7 @@ import proguard.gradle.ProGuardTask
 
 plugins {
     id("java")
-    id("com.gradleup.shadow") version "9.0.0"
+    id("com.gradleup.shadow") version "9.0.1"
 
     id("com.modrinth.minotaur") version "2.8.8"
 
