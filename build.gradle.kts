@@ -4,9 +4,9 @@ import proguard.gradle.ProGuardTask
 
 plugins {
     id("java")
-    id("com.gradleup.shadow") version "9.0.0-beta13"
+    id("com.gradleup.shadow") version "9.1.0"
 
-    id("com.modrinth.minotaur") version "2.8.7"
+    id("com.modrinth.minotaur") version "2.8.10"
 
     id("dev.s7a.gradle.minecraft.server") version "3.2.1"
 }
@@ -57,11 +57,11 @@ dependencies {
         exclude(group = "com.github.Anon8281", module = "UniversalScheduler")
         exclude(group = "com.jeff_media.updatechecker.universalScheduler")
     }
-    implementation("com.github.Anon8281:UniversalScheduler:0.1.6")
+    implementation("com.github.Anon8281:UniversalScheduler:0.1.7")
     implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.4.0")
 
     compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnly("io.th0rgal:oraxen:1.190.0")
+    compileOnly("io.th0rgal:oraxen:1.192.1")
 
     implementation("net.objecthunter:exp4j:0.4.8")
 }
