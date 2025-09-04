@@ -38,16 +38,14 @@ repositories {
             includeGroup("org.spigotmc")
         }
     }
-    maven {
-        name = "jeffMediaPublic"
-        url = uri("https://repo.jeff-media.com/public")
-    }
 
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
     maven { url = uri("https://oss.sonatype.org/content/repositories/central") }
 
     maven("https://repo.extendedclip.com/releases/")
     maven("https://repo.oraxen.com/releases")
+
+    maven("https://maven.paulem.ovh")
 }
 
 // ------------------------ DEPENDENCIES ------------------------
