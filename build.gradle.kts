@@ -45,7 +45,7 @@ repositories {
     maven("https://repo.extendedclip.com/releases/")
     maven("https://repo.oraxen.com/releases")
 
-    maven("https://maven.paulem.ovh")
+    maven("https://maven.paulem.ovh/releases")
 }
 
 // ------------------------ DEPENDENCIES ------------------------
