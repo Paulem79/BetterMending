@@ -10,6 +10,7 @@ public class NewGithubChangelog {
     public static String getChangelog() {
         try {
             GitHub gitHub = new GitHubBuilder()
+                    .withRateLimitHandler(GitHubRateLimitHandler.FAIL)
                     .build();
 
             GHRepository repository = gitHub.getRepository("Paulem79/BetterMending");
