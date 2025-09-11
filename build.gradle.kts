@@ -61,7 +61,7 @@ dependencies {
     implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.4.0")
 
     compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnly("io.th0rgal:oraxen:1.193.0")
+    compileOnly("io.th0rgal:oraxen:1.193.1")
 
     implementation("net.objecthunter:exp4j:0.4.8")
 }
