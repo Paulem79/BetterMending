@@ -48,6 +48,16 @@ jobs:
       - name: 🔨 Build project
         run: ./gradlew build
 
+      - name: 🔁 Generate as development build
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "dev"
+          prerelease: false
+          title: "Development Build"
+          files: |
+            build/libs/*.jar
+
       - name: ✅ Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -83,13 +93,3 @@ jobs:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_UPLOAD_TOKEN }}
           GITHUB_EVENT_RAW_PATH: ${{ github.event_path }}
         continue-on-error: true
-
-      - name: 🔁 Generate as development build
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "dev"
-          prerelease: true
-          title: "Development Build"
-          files: |
-            build/libs/*.jar
