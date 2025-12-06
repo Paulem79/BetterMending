@@ -1,29 +1,17 @@
 import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
 import ovh.paulem.buildscript.NewGithubChangelog
-import proguard.gradle.ProGuardTask
 
 plugins {
     id("java")
-    id("com.gradleup.shadow") version "9.3.0"
+    id("com.gradleup.shadow") version "8.3.0"
 
     id("com.modrinth.minotaur") version "2.8.10"
 
     id("dev.s7a.gradle.minecraft.server") version "4.0.1"
 }
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("com.guardsquare:proguard-gradle:7.+") {
-            exclude("com.android.tools.build")
-        }
-    }
-}
-
 group = "ovh.paulem.btm"
-version = "2.9.1"
+version = "2.9.2"
 
 // ------------------------ REPOSITORIES ------------------------
 repositories {
@@ -45,12 +33,12 @@ repositories {
     maven("https://repo.extendedclip.com/releases/")
     maven("https://repo.oraxen.com/releases")
 
-    maven("https://maven.paulem.ovh/releases")
+    maven("https://maven.paulem.net/releases")
 }
 
 // ------------------------ DEPENDENCIES ------------------------
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.21.10-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:26.0.2-1")
 
     implementation("com.jeff_media:SpigotUpdateChecker:3.0.4") {
@@ -63,35 +51,13 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.7")
     compileOnly("io.th0rgal:oraxen:1.198.0")
 
+    compileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
+
+    compileOnly("javax.validation:validation-api:2.0.1.Final")
+    annotationProcessor("javax.validation:validation-api:2.0.1.Final")
+
     implementation("net.objecthunter:exp4j:0.4.8")
-}
-
-// ------------------------ PROGUARD ------------------------
-tasks.register<ProGuardTask>("proguardJar") {
-    outputs.upToDateWhen { false }
-    dependsOn(tasks.shadowJar)
-    configuration("proguard-rules.pro")
-
-    injars(tasks.shadowJar)
-    outjars(file("build/libs/temp-${tasks.shadowJar.get().archiveFileName.get()}"))
-
-    finalizedBy("finalizeJar")
-
-    keep("class ovh.paulem.btm.libs.bstats.Metrics")
-    keepclassmembers("class ovh.paulem.btm.libs.bstats.Metrics")
-    keepparameternames()
-}
-
-// Rename the final proguard jar to the original shadowJar name
-tasks.register("finalizeJar") {
-    dependsOn("proguardJar")
-    doLast {
-        val shadowJarFile = tasks.shadowJar.get().archiveFile.get().asFile
-        val proguardedJarFile = file("build/libs/temp-${tasks.shadowJar.get().archiveFileName.get()}")
-
-        shadowJarFile.delete()
-        proguardedJarFile.renameTo(shadowJarFile)
-    }
 }
 
 // ------------------------ SHADOW JAR ------------------------
@@ -130,9 +96,9 @@ tasks.processResources {
 // ------------------------ PAPER TEST SYSTEM ------------------------
 val paperDir = rootDir.resolve("servers").resolve("paper")
 
-listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21", "1.21.4", "1.21.5").forEach { version ->
+listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21", "1.21.4", "1.21.5", "1.21.10").forEach { version ->
     tasks.register<LaunchMinecraftServerTask>("paper-$version") {
-        dependsOn("finalizeJar")
+        dependsOn(tasks.build)
 
         doFirst {
             copies(version, paperDir)
@@ -141,6 +107,8 @@ listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21", "1.21.4", "1.21.5").forEac
         serverDirectory.set(paperDir.resolve(version).absolutePath)
         jarUrl.set(LaunchMinecraftServerTask.JarUrl.Paper(version))
         agreeEula.set(true)
+        // Edit used jvm to use java 8
+        jvmArgument.set(listOf("-Djava.awt.headless=true", "-Xms512M", "-Xmx2G", "-XX:+UseG1GC"))
     }
 }
 
@@ -148,7 +116,7 @@ val foliaDir = rootDir.resolve("servers").resolve("folia")
 
 listOf("1.21.4").forEach { version ->
     tasks.register<LaunchMinecraftServerTask>("folia-$version") {
-        dependsOn("finalizeJar")
+        dependsOn(tasks.build)
 
         doFirst {
             copies(version, foliaDir)
@@ -225,14 +193,12 @@ tasks.build {
     mustRunAfter(tasks.clean)
     dependsOn(tasks.clean)
 
-    dependsOn("proguardJar")
+    dependsOn(tasks.shadowJar)
 }
 
 java {
     withSourcesJar()
 }
-
-tasks.jar { enabled = false }
 
 java {
     toolchain {

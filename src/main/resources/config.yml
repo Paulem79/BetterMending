@@ -108,8 +108,11 @@ blacklisted-items:
 file-based: false
 
 ## -------- MISCELLANEOUS --------
-# Disable or not statistics (help me to make my plugin better!)
+# BStats statistics (help me to make my plugin better!)
 bstat: true
 
+# Crashlog reporting to my Discord (help me to fix bugs faster!)
+crashlogSending: true
+
 # Please, do not touch!
-version: 13
+version: 14
