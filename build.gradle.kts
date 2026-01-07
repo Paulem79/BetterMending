@@ -7,7 +7,7 @@ plugins {
 
     id("com.modrinth.minotaur") version "2.8.10"
 
-    id("dev.s7a.gradle.minecraft.server") version "4.0.1"
+    id("dev.s7a.gradle.minecraft.server") version "4.0.2"
 }
 
 group = "ovh.paulem.btm"
