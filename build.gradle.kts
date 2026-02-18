@@ -39,7 +39,7 @@ repositories {
 // ------------------------ DEPENDENCIES ------------------------
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21.10-R0.1-SNAPSHOT")
-    compileOnly("org.jetbrains:annotations:26.0.2-1")
+    compileOnly("org.jetbrains:annotations:26.1.0")
 
     implementation("com.jeff_media:SpigotUpdateChecker:3.0.4") {
         exclude(group = "com.github.Anon8281", module = "UniversalScheduler")
