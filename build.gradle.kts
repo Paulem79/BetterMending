@@ -3,7 +3,7 @@ import ovh.paulem.buildscript.NewGithubChangelog
 
 plugins {
     id("java")
-    id("com.gradleup.shadow") version "8.3.0"
+    id("com.gradleup.shadow") version "8.3.10"
 
     id("com.modrinth.minotaur") version "2.8.10"
 
