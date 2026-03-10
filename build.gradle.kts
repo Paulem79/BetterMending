@@ -1,5 +1,5 @@
 import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
-import ovh.paulem.buildscript.NewGithubChangelog
+import net.paulem.buildscript.NewGithubChangelog
 
 plugins {
     id("java")
@@ -10,7 +10,7 @@ plugins {
     id("dev.s7a.gradle.minecraft.server") version "4.0.2"
 }
 
-group = "ovh.paulem.btm"
+group = "net.paulem.btm"
 version = "2.9.2"
 
 // ------------------------ REPOSITORIES ------------------------
@@ -70,8 +70,8 @@ tasks.shadowJar {
     exclude("LICENSE.txt")
     exclude("License-ASM.txt")
 
-    relocate("com.github.fierioziy.particlenativeapi", "ovh.paulem.btm.libs.particleapi")
-    relocate("com.jeff_media.updatechecker", "ovh.paulem.btm.libs.updatechecker")
+    relocate("com.github.fierioziy.particlenativeapi", "net.paulem.btm.libs.particleapi")
+    relocate("com.jeff_media.updatechecker", "net.paulem.btm.libs.updatechecker")
 
     // Use UniversalScheduler from SpigotUpdateChecker instead of the one from implementation
     exclude("com/github/Anon8281/universalScheduler/*Scheduler/**")
@@ -79,7 +79,7 @@ tasks.shadowJar {
     exclude("com/github/Anon8281/universalScheduler/utils/**")
     exclude("com/github/Anon8281/universalScheduler/UniversalScheduler.**")
 
-    relocate("com.github.Anon8281.universalScheduler", "ovh.paulem.btm.libs.updatechecker.universalScheduler")
+    relocate("com.github.Anon8281.universalScheduler", "net.paulem.btm.libs.updatechecker.universalScheduler")
 
     minimize()
 }

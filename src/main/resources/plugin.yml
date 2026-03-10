@@ -1,7 +1,7 @@
 name: BetterMending
-main: ovh.paulem.btm.BetterMending
+main: net.paulem.btm.BetterMending
 version: ${version}
-website: paulem.ovh
+website: paulem.net
 author: Paulem
 prefix: BetterMending
 description: A small quality of life tweak to the Mending enchantment
