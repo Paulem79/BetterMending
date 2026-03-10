@@ -3,6 +3,7 @@ package net.paulem.btm.managers;
 import com.github.fierioziy.particlenativeapi.api.ParticleNativeAPI;
 import com.github.fierioziy.particlenativeapi.api.utils.ParticleException;
 import com.github.fierioziy.particlenativeapi.core.ParticleNativeCore;
+import net.paulem.btm.utils.ReflectionUtils;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.jetbrains.annotations.Nullable;
@@ -11,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import net.paulem.btm.libs.k3kdude.DiscordWebhook;
 import net.paulem.btm.utils.CrashDumpInformations;
-import net.paulem.btm.utils.ReflectionUtils;
 import net.paulem.btm.versioned.Versioning;
 
 public class ParticleManager {

@@ -1,8 +1,8 @@
 package net.paulem.btm.versioned.sounds;
 
+import net.paulem.btm.utils.ReflectionUtils;
 import org.bukkit.Sound;
 import org.jetbrains.annotations.Nullable;
-import net.paulem.btm.utils.ReflectionUtils;
 
 public class SoundsLegacy implements SoundsHandler {
     @Override
