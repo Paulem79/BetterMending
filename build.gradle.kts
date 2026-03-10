@@ -48,7 +48,7 @@ dependencies {
     implementation("com.github.Anon8281:UniversalScheduler:0.1.7")
     implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.5.0")
 
-    compileOnly("me.clip:placeholderapi:2.11.7")
+    compileOnly("me.clip:placeholderapi:2.12.2")
     compileOnly("io.th0rgal:oraxen:1.198.0")
 
     compileOnly("org.projectlombok:lombok:1.18.42")
