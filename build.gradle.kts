@@ -1,8 +1,11 @@
 import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
 import net.paulem.buildscript.NewGithubChangelog
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("java")
+    // Use kotlin
+    kotlin("jvm") version "2.3.10"
     id("com.gradleup.shadow") version "8.3.10"
 
     id("com.modrinth.minotaur") version "2.9.0"
@@ -181,12 +184,15 @@ tasks.register<Task>("changelog") {
     }
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    JavaVersion.VERSION_1_8.toString().also {
-        sourceCompatibility = it
-        targetCompatibility = it
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
     }
+}
+
+tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
+    options.release.set(8)
 }
 
 tasks.build {
@@ -194,14 +200,21 @@ tasks.build {
     dependsOn(tasks.clean)
 
     dependsOn(tasks.shadowJar)
+    dependsOn(tasks.named("sourcesJar"))
 }
 
-java {
-    withSourcesJar()
+kotlin {
+    jvmToolchain(21)
 }
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
+}
+
+// Sources jar
+tasks.register<Jar>("sourcesJar") {
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
 }

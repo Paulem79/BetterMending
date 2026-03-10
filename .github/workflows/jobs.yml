@@ -6,8 +6,6 @@
 name: ✨ Jobs
 on:
   push:
-    branches:
-      - master
   pull_request:
 
 jobs:

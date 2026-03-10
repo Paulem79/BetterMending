@@ -21,7 +21,7 @@ public abstract class PlayerConfigHandler {
         Map<UUID, Boolean> toMigrate = new HashMap<>();
 
         if(dataFile.exists()) {
-            BetterMending.getInstance().getLogger().info("Migrating " + dataFile.getName() + " to PDC...");
+            BetterMending.instance.getLogger().info("Migrating " + dataFile.getName() + " to PDC...");
 
             YamlConfiguration data = YamlConfiguration.loadConfiguration(dataFile);
 
@@ -46,12 +46,12 @@ public abstract class PlayerConfigHandler {
         return toMigrate;
     }
 
-    public static PlayerConfigHandler of(BetterMending plugin) {
-        dataFile = new File(plugin.getDataFolder(), "data.yml");
+    public static PlayerConfigHandler of() {
+        dataFile = new File(BetterMending.instance.getDataFolder(), "data.yml");
 
         PlayerConfigHandler playerConfigHandler;
 
-        boolean fileBased = plugin.getConfig().getBoolean("file-based", false);
+        boolean fileBased = BetterMending.instance.getConfig().getBoolean("file-based", false);
         boolean dataFileExists = dataFile.exists();
         boolean hasPDC = Versioning.hasPDC();
 

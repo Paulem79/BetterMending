@@ -45,7 +45,7 @@ public class PreventDestroyListener extends ManagersListener {
     }
 
     public boolean isPreventNeeded(Player player){
-        if(!BetterMending.getConf().getBoolean("prevent-destroy", false)) return false;
+        if(!BetterMending.instance.getConfig().getBoolean("prevent-destroy", false)) return false;
 
         if(!player.hasPermission("btm.use")) return false;
 
@@ -53,13 +53,13 @@ public class PreventDestroyListener extends ManagersListener {
 
         if(item.getType() == Material.AIR) return false;
 
-        if(!damageHandler.isDamageable(item)) return false;
+        if(!BetterMending.damageHandler.isDamageable(item)) return false;
 
         // Continue if item has Mending, and he's not right-clicking in air
         if(!item.containsEnchantment(Enchantment.MENDING)) return false;
 
-        if(!repairManager.canRepairItem(player, item)) return false;
+        if(!BetterMending.repairManager.canRepairItem(player, item)) return false;
 
-        return damageHandler.getDamage(item) == item.getType().getMaxDurability()-1;
+        return BetterMending.damageHandler.getDamage(item) == item.getType().getMaxDurability()-1;
     }
 }

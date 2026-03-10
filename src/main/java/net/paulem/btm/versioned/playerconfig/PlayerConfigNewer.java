@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PlayerConfigNewer extends PlayerConfigHandler {
-    private final NamespacedKey playerConfigKey = new NamespacedKey(BetterMending.getInstance(), "playerConfig");
+    private final NamespacedKey playerConfigKey = new NamespacedKey(BetterMending.instance, "playerConfig");
     private static final PersistentDataType<Byte, Boolean> type = PersistentDataType.BOOLEAN;
 
     @Nullable
@@ -28,7 +28,7 @@ public class PlayerConfigNewer extends PlayerConfigHandler {
     PlayerConfigNewer(Map<UUID, Boolean> toMigrate) {
         this.toMigrate = toMigrate;
 
-        BetterMending.getInstance().getServer().getPluginManager().registerEvents(new ConfigMigrationListener(), BetterMending.getInstance());
+        BetterMending.instance.getServer().getPluginManager().registerEvents(new ConfigMigrationListener(), BetterMending.instance);
     }
 
     public void migratePlayer(Player player) {
@@ -40,7 +40,7 @@ public class PlayerConfigNewer extends PlayerConfigHandler {
             data = YamlConfiguration.loadConfiguration(dataFile);
         }
 
-        BetterMending.getInstance().getLogger().info(player.getUniqueId().toString());
+        BetterMending.instance.getLogger().info(player.getUniqueId().toString());
         if(toMigrate.containsKey(player.getUniqueId())) {
             setPlayer(player, toMigrate.get(player.getUniqueId()));
 
@@ -48,7 +48,7 @@ public class PlayerConfigNewer extends PlayerConfigHandler {
             try {
                 data.save(dataFile);
             } catch (IOException e) {
-                BetterMending.getInstance().getLogger().throwing(PlayerConfigNewer.class.getName(), "migratePlayer", e);
+                BetterMending.instance.getLogger().throwing(PlayerConfigNewer.class.getName(), "migratePlayer", e);
             }
 
             toMigrate.remove(player.getUniqueId());
@@ -56,7 +56,7 @@ public class PlayerConfigNewer extends PlayerConfigHandler {
 
         if(toMigrate.isEmpty()) {
             PlayerConfigHandler.dataFile.delete();
-            BetterMending.getInstance().getLogger().info("Migration complete!");
+            BetterMending.instance.getLogger().info("Migration complete!");
         }
     }
 

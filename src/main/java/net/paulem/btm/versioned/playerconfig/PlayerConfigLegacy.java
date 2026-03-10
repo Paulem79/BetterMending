@@ -27,7 +27,7 @@ public class PlayerConfigLegacy extends PlayerConfigHandler {
         try {
             this.data.save(dataFile);
         } catch (IOException e) {
-            BetterMending.getInstance().getLogger().throwing(PlayerConfigLegacy.class.getName(), "setPlayer", e);
+            BetterMending.instance.getLogger().throwing(PlayerConfigLegacy.class.getName(), "setPlayer", e);
         }
 
         return enabled;
@@ -38,7 +38,7 @@ public class PlayerConfigLegacy extends PlayerConfigHandler {
         try {
             this.data.load(dataFile);
         } catch (Exception e) {
-            BetterMending.getInstance().getLogger().throwing(PlayerConfigLegacy.class.getName(), "reload", e);
+            BetterMending.instance.getLogger().throwing(PlayerConfigLegacy.class.getName(), "reload", e);
         }
     }
 }
