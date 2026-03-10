@@ -11,6 +11,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import com.github.Anon8281.universalScheduler.UniversalRunnable;
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import net.paulem.btm.BetterMending;
 import net.paulem.btm.listeners.extendables.ManagersListener;
 import net.paulem.btm.versioned.sounds.SoundsHandler;
@@ -25,6 +28,12 @@ public class MendingUseListener extends ManagersListener {
     private static final Sound ENDERMAN_TELEPORT_SOUND = SoundsHandler.getSoundHandler().getEndermanTeleportSound();
 
     private final Map<UUID, Integer> cooldownUses = new HashMap<>();
+    private final TaskScheduler scheduler;
+
+    public MendingUseListener() {
+        super();
+        this.scheduler = UniversalScheduler.getScheduler(BetterMending.instance);
+    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemUse(PlayerInteractEvent e) {
@@ -119,6 +128,20 @@ public class MendingUseListener extends ManagersListener {
     }
 
     public void useRepair(Player player, ItemStack item){
-        BetterMending.repairManager.repairItem(player, item, BetterMending.instance.getConfig().getBoolean("playSound", true), BetterMending.instance.getConfig().getBoolean("playEffect", true), false);
+        boolean playSound = BetterMending.instance.getConfig().getBoolean("playSound", true);
+        boolean playEffect = BetterMending.instance.getConfig().getBoolean("playEffect", true);
+
+        // Delay by 1 tick so the repair happens after the event cancellation is fully processed.
+        // Without this delay, setCancelled(true) causes the server to restore the inventory state
+        // on the client, reverting the durability change.
+        scheduler.runTaskLater(new UniversalRunnable() {
+            @Override
+            public void run() {
+                ItemStack currentItem = player.getInventory().getItemInMainHand();
+                if (currentItem.isSimilar(item)) {
+                    BetterMending.repairManager.repairItem(player, currentItem, playSound, playEffect, false);
+                }
+            }
+        }, 1L);
     }
 }

@@ -92,6 +92,12 @@ public class RepairManager {
             else ExperienceUtils.changePlayerExp(player, -expValue/10);
         } else return;
 
+        // Ensure the modified item is actually updated in the player's inventory.
+        // getItemInMainHand() returns a copy, so we need to set it back explicitly.
+        if (player.getInventory().getItemInMainHand().isSimilar(item)) {
+            player.getInventory().setItemInMainHand(item);
+        }
+
         // Should play sound?
         if(playSound) {
             player.playSound(player.getLocation(),

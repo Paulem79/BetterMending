@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "net.paulem.btm"
-version = "2.9.3"
+version = "2.10.0"
 
 // ------------------------ REPOSITORIES ------------------------
 repositories {
