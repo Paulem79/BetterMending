@@ -24,7 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class BetterMending : JavaPlugin() {
     companion object {
-        const val SPIGOT_RESOURCE_ID = 104324
+        const val SPIGOT_RESOURCE_ID = 112248
 
         lateinit var instance: BetterMending
         lateinit var playerConfig: PlayerConfigHandler
