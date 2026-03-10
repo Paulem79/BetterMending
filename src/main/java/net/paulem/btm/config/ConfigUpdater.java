@@ -12,27 +12,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.paulem.btm.utils.PluginUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.google.common.base.Charsets;
 import net.paulem.btm.BetterMending;
-import net.paulem.btm.utils.PluginUtils;
 
 public class ConfigUpdater {
-    private final boolean instantDeprecated = false; // Just an option to depecrate the config if the version is different
+    private final boolean instantDeprecated = false; // Just an option to deprecate the config if the version is different
     private final int newVersion; // The next version of the Config
 
     private File path;
     private List<String> lines;
 
     public ConfigUpdater() {
-        FileConfiguration embeddedConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(BetterMending.getInstance().getResource("config.yml")));
+        FileConfiguration embeddedConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(BetterMending.instance.getResource("config.yml")));
         this.newVersion = embeddedConfig.getInt("version", 0);
     }
 
     public void checkUpdate(int oldV) {
-        path = new File(BetterMending.getInstance().getDataFolder(), "config.yml");
+        path = new File(BetterMending.instance.getDataFolder(), "config.yml");
 
         if (instantDeprecated) {
             if (oldV != newVersion)
@@ -41,7 +41,7 @@ public class ConfigUpdater {
         }
 
         if (oldV == newVersion) {
-            BetterMending.getInstance().getLogger().info("The config is updated!");
+            BetterMending.instance.getLogger().info("The config is updated!");
             return;
         }
 
@@ -50,7 +50,7 @@ public class ConfigUpdater {
     }
 
     public void updateConfig() {
-        BetterMending.getInstance().getLogger().info("Updating your config...");
+        BetterMending.instance.getLogger().info("Updating your config...");
 
         List<String> newLines = readInsideFile("/config.yml");
 
@@ -66,13 +66,13 @@ public class ConfigUpdater {
         String versionLine = "version: ";
         newLines.set(getIndex(versionLine, newLines), versionLine + newVersion);
         writeFile(path, newLines);
-        BetterMending.getInstance().getLogger().info("Your configuration has been updated! You can find more informations about new option on the plugin resource page!");
+        BetterMending.instance.getLogger().info("Your configuration has been updated! You can find more informations about new option on the plugin resource page!");
 
         PluginUtils.reloadConfig();
     }
 
     private void deprecateConfig() {
-        BetterMending.getInstance().getLogger().info("Now your config is deprecated please check your folder for re-setting it!");
+        BetterMending.instance.getLogger().info("Now your config is deprecated please check your folder for re-setting it!");
         String depName = "deprecated_config_" + LocalDate.now();
         File old = new File(path.getParentFile(), depName + ".yml");
         try {
@@ -110,7 +110,7 @@ public class ConfigUpdater {
     }
 
     public List<String> readInsideFile(String path) {
-        try (InputStream in = BetterMending.getInstance().getClass().getResourceAsStream(path);
+        try (InputStream in = BetterMending.instance.getClass().getResourceAsStream(path);
              BufferedReader input = new BufferedReader(new InputStreamReader(in));) {
             return input.lines().collect(Collectors.toList());
         } catch (Exception e) {

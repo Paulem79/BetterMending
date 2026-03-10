@@ -12,12 +12,12 @@ public class ConfigBlacklist {
     private final List<String> blacklistedItems;
 
     public ConfigBlacklist() {
-        blacklistedPlayers = BetterMending.getConf().getStringList("blacklisted-players")
+        blacklistedPlayers = BetterMending.instance.getConfig().getStringList("blacklisted-players")
                 .stream()
                 .map(String::toLowerCase)
                 .collect(Collectors.toList());
 
-        blacklistedItems = BetterMending.getConf().getStringList("blacklisted-items");
+        blacklistedItems = BetterMending.instance.getConfig().getStringList("blacklisted-items");
     }
 
     public boolean isBlacklisted(Player player) {
@@ -28,7 +28,7 @@ public class ConfigBlacklist {
         return blacklistedItems
                 .stream()
                 .anyMatch(mat -> mat.equalsIgnoreCase(stack.getType().name()))
-                || BetterMending.getInstance().getOraxenCompat().isBlacklisted(stack);
+                || BetterMending.oraxenCompat.isBlacklisted(stack);
     }
 
     public List<String> getBlacklistedPlayers() {

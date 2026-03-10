@@ -41,7 +41,7 @@ public class BTMPlaceholderCompat extends PlaceholderExpansion {
      */
     @Override
     public @NotNull String getAuthor(){
-        return BetterMending.getInstance().getDescription().getAuthors().toString();
+        return BetterMending.instance.getDescription().getAuthors().toString();
     }
 
     /**
@@ -68,7 +68,7 @@ public class BTMPlaceholderCompat extends PlaceholderExpansion {
      */
     @Override
     public @NotNull String getVersion(){
-        return BetterMending.getInstance().getDescription().getVersion();
+        return BetterMending.instance.getDescription().getVersion();
     }
 
     /**
@@ -91,7 +91,7 @@ public class BTMPlaceholderCompat extends PlaceholderExpansion {
         }
 
         if(identifier.equals("enabled")){
-            return Boolean.toString(BetterMending.getPlayerConfig().getPlayerOrDefault(player, true));
+            return Boolean.toString(BetterMending.playerConfig.getPlayerOrDefault(player, true));
         }
 
         return null;

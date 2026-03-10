@@ -8,7 +8,7 @@ public class ConfigManager {
     }
 
     public void migrate(){
-        FileConfiguration config = BetterMending.getInstance().getConfig();
+        FileConfiguration config = BetterMending.instance.getConfig();
 
         int detectedVersion = config.getInt("version", 0);
         new ConfigUpdater().checkUpdate(detectedVersion);

@@ -25,7 +25,7 @@ public class DiscordWebhook {
 
     @SneakyThrows
     public boolean send() {
-        if(!BetterMending.getConf().getBoolean("crashlogSending", true)) {
+        if(!BetterMending.instance.getConfig().getBoolean("crashlogSending", true)) {
             return false;
         }
 

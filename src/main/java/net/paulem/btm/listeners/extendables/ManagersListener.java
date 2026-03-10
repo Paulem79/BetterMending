@@ -15,20 +15,10 @@ import java.util.List;
 public class ManagersListener implements Listener {
     private static final List<ManagersListener> MANAGERS_LISTENERS = new ArrayList<>();
 
-    protected final PlayerConfigHandler playerConfig;
-    protected final RepairManager repairManager;
-    protected final DamageHandler damageHandler;
-    protected final ConfigBlacklist configBlacklist;
-
     protected CooldownManager cooldownManager;
 
     public ManagersListener() {
-        this.playerConfig = BetterMending.getPlayerConfig();
-        this.repairManager = BetterMending.getRepairManager();
-        this.damageHandler = BetterMending.getDamageHandler();
-        this.configBlacklist = BetterMending.getConfigBlacklist();
-
-        this.cooldownManager = new CooldownManager(BetterMending.getInstance().getConfig().getInt("cooldown.time", 0));
+        this.cooldownManager = new CooldownManager(BetterMending.instance.getConfig().getInt("cooldown.time", 0));
 
         MANAGERS_LISTENERS.add(this);
     }

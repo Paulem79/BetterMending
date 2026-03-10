@@ -1,28 +1,26 @@
 package net.paulem.btm.commands;
 
 import net.paulem.btm.BetterMending;
+import net.paulem.btm.utils.PluginUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import net.paulem.btm.utils.PluginUtils;
 import net.paulem.btm.versioned.playerconfig.PlayerConfigHandler;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class CommandBTM implements TabExecutor {
-    public final BetterMending plugin;
     public final int configVersion;
     public final PlayerConfigHandler playerDataConfig;
     public final String pluginVersion;
 
-    public CommandBTM(BetterMending plugin, int configVersion, PlayerConfigHandler playerDataConfig) {
-        this.plugin = plugin;
+    public CommandBTM(int configVersion, PlayerConfigHandler playerDataConfig) {
         this.configVersion = configVersion;
         this.playerDataConfig = playerDataConfig;
-        this.pluginVersion = plugin.getDescription().getVersion();
+        this.pluginVersion = BetterMending.instance.getDescription().getVersion();
     }
 
     @Override

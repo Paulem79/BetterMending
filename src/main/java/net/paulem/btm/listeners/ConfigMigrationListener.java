@@ -9,8 +9,8 @@ import net.paulem.btm.versioned.playerconfig.PlayerConfigNewer;
 public class ConfigMigrationListener extends ManagersListener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        if(BetterMending.getPlayerConfig() instanceof PlayerConfigNewer) {
-            PlayerConfigNewer playerConfigNewer = (PlayerConfigNewer) BetterMending.getPlayerConfig();
+        if(BetterMending.playerConfig instanceof PlayerConfigNewer) {
+            PlayerConfigNewer playerConfigNewer = (PlayerConfigNewer) BetterMending.playerConfig;
 
             playerConfigNewer.migratePlayer(e.getPlayer());
         }

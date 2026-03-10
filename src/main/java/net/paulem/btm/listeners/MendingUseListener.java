@@ -33,15 +33,15 @@ public class MendingUseListener extends ManagersListener {
         // If the player doesn't have perm btm.use, is in creative or spectator mode, or is blacklisted, then do not repair
         if(!player.hasPermission("btm.use") ||
                 Arrays.asList(GameMode.SPECTATOR, GameMode.CREATIVE).contains(player.getGameMode()) ||
-                BetterMending.getConfigBlacklist().isBlacklisted(player)) return;
+                BetterMending.configBlacklist.isBlacklisted(player)) return;
 
-        if(!BetterMending.getPlayerConfig().getPlayerOrCreate(player, true)) return;
+        if(!BetterMending.playerConfig.getPlayerOrCreate(player, true)) return;
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if(item.getType() == Material.AIR || BetterMending.getConfigBlacklist().isBlacklisted(item)) return;
+        if(item.getType() == Material.AIR || BetterMending.configBlacklist.isBlacklisted(item)) return;
 
-        if(!damageHandler.isDamageable(item)) return;
+        if(!BetterMending.damageHandler.isDamageable(item)) return;
 
         // Continue if item has Mending, the player is sneaking, and he's right-clicking in air
         if(!player.isSneaking() ||
@@ -49,7 +49,7 @@ public class MendingUseListener extends ManagersListener {
                 e.getAction() != Action.RIGHT_CLICK_AIR) return;
 
         // If it doesn't have any damage, return
-        if(!damageHandler.hasDamage(item)) return;
+        if(!BetterMending.damageHandler.hasDamage(item)) return;
 
         UUID playerId = player.getUniqueId();
 
@@ -76,7 +76,7 @@ public class MendingUseListener extends ManagersListener {
     }
 
     public void isInMap(UUID playerId, Player player, ItemStack item){
-        int maxUses = BetterMending.getConf().getInt("cooldown.uses", 3);
+        int maxUses = BetterMending.instance.getConfig().getInt("cooldown.uses", 3);
 
         // If the player used too much times the ability
         if(cooldownUses.get(playerId) > maxUses){
@@ -100,8 +100,8 @@ public class MendingUseListener extends ManagersListener {
     public void alertCooldown(UUID playerId, Player player){
         Duration timeLeft = cooldownManager.getRemainingCooldown(playerId);
         if (!(timeLeft.isZero() || timeLeft.isNegative())) {
-            if(BetterMending.getConf().getBoolean("cooldown.message", true)) {
-                String text = BetterMending.getConf().getString(
+            if(BetterMending.instance.getConfig().getBoolean("cooldown.message", true)) {
+                String text = BetterMending.instance.getConfig().getString(
                                 "cooldown.text",
                                 ChatColor.DARK_RED + "Please wait " + timeLeft.getSeconds() + " seconds before using this ability!"
 
@@ -110,7 +110,7 @@ public class MendingUseListener extends ManagersListener {
 
                 player.sendMessage(text);
             }
-            if(BetterMending.getConf().getBoolean("cooldown.sound", true) && ENDERMAN_TELEPORT_SOUND != null)
+            if(BetterMending.instance.getConfig().getBoolean("cooldown.sound", true) && ENDERMAN_TELEPORT_SOUND != null)
                 player.playSound(
                         player.getLocation(),
                         ENDERMAN_TELEPORT_SOUND,
@@ -119,6 +119,6 @@ public class MendingUseListener extends ManagersListener {
     }
 
     public void useRepair(Player player, ItemStack item){
-        repairManager.repairItem(player, item, BetterMending.getConf().getBoolean("playSound", true), BetterMending.getConf().getBoolean("playEffect", true), false);
+        BetterMending.repairManager.repairItem(player, item, BetterMending.instance.getConfig().getBoolean("playSound", true), BetterMending.instance.getConfig().getBoolean("playEffect", true), false);
     }
 }

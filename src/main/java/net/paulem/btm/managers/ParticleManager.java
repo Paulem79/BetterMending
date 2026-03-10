@@ -34,13 +34,13 @@ public class ParticleManager {
 
         if(Versioning.isLegacy()) {
             try {
-                this.api = ParticleNativeCore.loadAPI(BetterMending.getInstance());
+                this.api = ParticleNativeCore.loadAPI(BetterMending.instance);
             } catch (ParticleException e) {
                 this.api = null;
                 if(this.webhook != null) {
                     try {
                         this.webhook.setContent("BetterMending: Failed to load ParticleNativeAPI. Particles on legacy versions will not work.\n" +
-                                "Exception: " + e.getMessage() + "\nDump informations:\n" + CrashDumpInformations.buildVersionString(BetterMending.getInstance()));
+                                "Exception: " + e.getMessage() + "\nDump informations:\n" + CrashDumpInformations.buildVersionString(BetterMending.instance));
                         this.webhook.send();
                     } catch (Exception ex) {
                         // Ignore
@@ -53,9 +53,9 @@ public class ParticleManager {
     public void summonCircle(Player player, int size) {
         Location location = player.getLocation()
                 .add(
-                        BetterMending.getConf().getDouble("offset.x", 0),
-                        BetterMending.getConf().getDouble("offset.y", 0),
-                        BetterMending.getConf().getDouble("offset.z", 0)
+                        BetterMending.instance.getConfig().getDouble("offset.x", 0),
+                        BetterMending.instance.getConfig().getDouble("offset.y", 0),
+                        BetterMending.instance.getConfig().getDouble("offset.z", 0)
                 );
 
         if(location.getWorld() == null) return;
@@ -66,9 +66,9 @@ public class ParticleManager {
             particleLoc.setZ(location.getZ() + Math.sin(d) * size);
 
             Color particleColor = Color.fromRGB(
-                    checkRGB(BetterMending.getConf().getInt("color.red", 144), 144),
-                    checkRGB(BetterMending.getConf().getInt("color.green", 238), 238),
-                    checkRGB(BetterMending.getConf().getInt("color.blue", 144), 144)
+                    checkRGB(BetterMending.instance.getConfig().getInt("color.red", 144), 144),
+                    checkRGB(BetterMending.instance.getConfig().getInt("color.green", 238), 238),
+                    checkRGB(BetterMending.instance.getConfig().getInt("color.blue", 144), 144)
             );
 
             // Use vanilla Spigot when possible (1.13+ supports DustOptions). For legacy (<=1.12.2), send a particle packet via NMS.
@@ -110,7 +110,7 @@ public class ParticleManager {
                 try {
                     this.webhook.setContent("BetterMending: Failed to send particle packet to player " + player.getName() +
                             ". This may be due to an unsupported server version for ParticleNativeAPI.\n" +
-                            "Exception: " + e.getMessage() + "\nDump informations:\n" + CrashDumpInformations.buildVersionString(BetterMending.getInstance()));
+                            "Exception: " + e.getMessage() + "\nDump informations:\n" + CrashDumpInformations.buildVersionString(BetterMending.instance));
                     this.webhook.send();
                 } catch (Exception ex) {
                     // Ignore
