@@ -4,16 +4,13 @@ import net.paulem.btm.BetterMending;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class ConfigManager {
-    private final BetterMending plugin;
-
-    public ConfigManager(BetterMending plugin){
-        this.plugin = plugin;
+    public ConfigManager(){
     }
 
     public void migrate(){
-        FileConfiguration config = plugin.getConfig();
+        FileConfiguration config = BetterMending.getInstance().getConfig();
 
         int detectedVersion = config.getInt("version", 0);
-        new ConfigUpdater(plugin).checkUpdate(detectedVersion);
+        new ConfigUpdater().checkUpdate(detectedVersion);
     }
 }

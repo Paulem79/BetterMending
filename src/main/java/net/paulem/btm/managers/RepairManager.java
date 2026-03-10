@@ -24,8 +24,8 @@ public class RepairManager {
 
     private final ParticleManager particleManager;
 
-    public RepairManager(BetterMending plugin){
-        this.scheduler = UniversalScheduler.getScheduler(plugin);
+    public RepairManager(){
+        this.scheduler = UniversalScheduler.getScheduler(BetterMending.getInstance());
 
         this.particleManager = new ParticleManager();
     }

@@ -2,6 +2,7 @@ package net.paulem.btm;
 
 import com.jeff_media.updatechecker.UpdateCheckSource;
 import com.jeff_media.updatechecker.UpdateChecker;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import net.paulem.btm.compat.BTMPlaceholderCompat;
 import net.paulem.btm.commands.CommandBTM;
@@ -24,6 +25,7 @@ import net.paulem.btm.versioned.playerconfig.PlayerConfigHandler;
 import net.paulem.btm.versioned.playerconfig.PlayerConfigLegacy;
 
 public class BetterMending extends JavaPlugin {
+    @Getter
     private static BetterMending instance;
 
     private PlayerConfigHandler playerConfig;
@@ -31,6 +33,7 @@ public class BetterMending extends JavaPlugin {
     private DamageHandler damageHandler;
     private ConfigBlacklist configBlacklist;
 
+    @Getter
     private OraxenDefaultCompat oraxenCompat;
 
     @Override
@@ -44,13 +47,13 @@ public class BetterMending extends JavaPlugin {
         }
 
         saveDefaultConfig();
-        new ConfigManager(this).migrate();
+        new ConfigManager().migrate();
 
         FileConfiguration config = getConfig();
 
-        playerConfig = PlayerConfigHandler.of(this);
+        playerConfig = PlayerConfigHandler.of();
         damageHandler = Versioning.isPost17() ? new DamageNewer() : new DamageLegacy();
-        repairManager = new RepairManager(this);
+        repairManager = new RepairManager();
         configBlacklist = new ConfigBlacklist();
 
         final int SPIGOT_RESOURCE_ID = 112248;
@@ -68,7 +71,7 @@ public class BetterMending extends JavaPlugin {
         getCommand("btm").setTabCompleter(commandBTM);
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
-            boolean registered = new BTMPlaceholderCompat(this).register();
+            boolean registered = new BTMPlaceholderCompat().register();
             if(!registered) {
                 getLogger().warning("Unable to pass plugin to PlaceholderAPI! Better Mending placeholders may not work!");
             }
@@ -99,14 +102,6 @@ public class BetterMending extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabled! See you later!");
-    }
-
-    public OraxenDefaultCompat getOraxenCompat() {
-        return oraxenCompat;
-    }
-
-    public static BetterMending getInstance() {
-        return instance;
     }
 
     public static FileConfiguration getConf() {

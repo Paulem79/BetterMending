@@ -6,10 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import net.paulem.btm.BetterMending;
 
 public class BTMPlaceholderCompat extends PlaceholderExpansion {
-    private final BetterMending instance;
-
-    public BTMPlaceholderCompat(BetterMending instance){
-        this.instance = instance;
+    public BTMPlaceholderCompat(){
+        // Empty constructor required
     }
 
     /**
@@ -43,7 +41,7 @@ public class BTMPlaceholderCompat extends PlaceholderExpansion {
      */
     @Override
     public @NotNull String getAuthor(){
-        return instance.getDescription().getAuthors().toString();
+        return BetterMending.getInstance().getDescription().getAuthors().toString();
     }
 
     /**
@@ -70,7 +68,7 @@ public class BTMPlaceholderCompat extends PlaceholderExpansion {
      */
     @Override
     public @NotNull String getVersion(){
-        return instance.getDescription().getVersion();
+        return BetterMending.getInstance().getDescription().getVersion();
     }
 
     /**
