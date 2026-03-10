@@ -2,7 +2,8 @@ import dev.s7a.gradle.minecraft.server.tasks.LaunchMinecraftServerTask
 import net.paulem.buildscript.NewGithubChangelog
 
 plugins {
-    id("java")
+    // Use kotlin
+    kotlin("jvm") version "2.3.10"
     id("com.gradleup.shadow") version "8.3.10"
 
     id("com.modrinth.minotaur") version "2.9.0"
