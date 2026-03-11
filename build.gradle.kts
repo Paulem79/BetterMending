@@ -52,7 +52,7 @@ dependencies {
     implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.5.1")
 
     compileOnly("me.clip:placeholderapi:2.12.2")
-    compileOnly("io.th0rgal:oraxen:1.209.0")
+    compileOnly("io.th0rgal:oraxen:1.210.0")
 
     compileOnly("org.projectlombok:lombok:1.18.42")
     annotationProcessor("org.projectlombok:lombok:1.18.42")
