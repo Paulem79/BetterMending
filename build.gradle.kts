@@ -54,8 +54,8 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.12.2")
     compileOnly("io.th0rgal:oraxen:1.210.0")
 
-    compileOnly("org.projectlombok:lombok:1.18.44")
-    annotationProcessor("org.projectlombok:lombok:1.18.44")
+    compileOnly("org.projectlombok:lombok:1.18.46")
+    annotationProcessor("org.projectlombok:lombok:1.18.46")
 
     compileOnly("javax.validation:validation-api:2.0.1.Final")
     annotationProcessor("javax.validation:validation-api:2.0.1.Final")
