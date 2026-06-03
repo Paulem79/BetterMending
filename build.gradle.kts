@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     // Use kotlin
-    kotlin("jvm") version "2.3.10"
+    kotlin("jvm") version "2.4.0"
     id("com.gradleup.shadow") version "8.3.10"
 
     id("com.modrinth.minotaur") version "2.9.0"
