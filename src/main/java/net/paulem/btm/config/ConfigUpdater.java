@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
@@ -97,13 +98,13 @@ public class ConfigUpdater {
 
     public void writeFile(File file, List<String> toWrite) {
         try {
-            Files.write(file.toPath(), toWrite, Charsets.ISO_8859_1);
+            Files.write(file.toPath(), toWrite, StandardCharsets.ISO_8859_1);
         } catch (Exception ignored) {}
     }
 
     public List<String> readFile(File file) {
         try {
-            return Files.readAllLines(file.toPath(), Charsets.ISO_8859_1);
+            return Files.readAllLines(file.toPath(), StandardCharsets.ISO_8859_1);
         } catch (Exception e) {
             return new ArrayList<>();
         }
