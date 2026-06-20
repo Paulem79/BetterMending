@@ -4,7 +4,7 @@ kotlin = "2.4.0"
 shadow = "8.3.11"
 minotaur = "2.9.0"
 minecraft-server = "4.0.2"
-freefair-lombok = "8.14.4"
+freefair-lombok = "9.5.0"
 
 # API
 spigot-api = "26.2-R0.1-SNAPSHOT"
