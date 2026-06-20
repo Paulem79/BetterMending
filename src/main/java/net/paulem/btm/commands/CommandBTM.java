@@ -1,20 +1,19 @@
 package net.paulem.btm.commands;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.paulem.btm.BetterMending;
 import net.paulem.btm.utils.PluginUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import net.paulem.btm.versioned.playerconfig.PlayerConfigHandler;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class CommandBTM implements TabExecutor {
     public final PlayerConfigHandler playerDataConfig;
@@ -28,37 +27,53 @@ public class CommandBTM implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if ((args.length == 1 && args[0].equalsIgnoreCase("version")) || sender instanceof ConsoleCommandSender) {
-            TextComponent versionComponent = Component.text("Running BetterThanMending")
-                    .color(NamedTextColor.BLUE)
-                    .append(Component.text(pluginVersion).color(NamedTextColor.GOLD))
-                    .append(Component.text(" with config version ").color(NamedTextColor.BLUE))
-                    .append(Component.text(BetterMending.instance.getConfigVersion()).color(NamedTextColor.DARK_GREEN));
-            sender.sendMessage(MiniMessage.miniMessage().serialize(versionComponent));
+            BetterMending.languageManager.sendMessage(sender, "version",
+                    Placeholder.parsed("plugin", pluginVersion), Placeholder.parsed("config", String.valueOf(BetterMending.instance.getConfigVersion()))
+            );
 
+            return true;
         } else if((args.length == 0 || args[0].equalsIgnoreCase("toggle")) && sender instanceof Player player) {
             boolean enabled = playerDataConfig.setPlayer(player, !playerDataConfig.getPlayerOrCreate(player, true));
 
             if(enabled) {
-                player.sendMessage(PluginUtils.parseConfigText("toggle.enabled", "Mending's ability has been &aenabled &r!"));
+                BetterMending.languageManager.sendMessage(player, "toggle.enabled");
             } else {
-                player.sendMessage(PluginUtils.parseConfigText("toggle.disabled", "Mending's ability has been &cdisabled &r!"));
+                BetterMending.languageManager.sendMessage(player, "toggle.disabled");
             }
 
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             if (!sender.hasPermission("btm.reload")) {
-                TextComponent noPermissionComponent = Component.text("You don't have permission to do that!")
-                        .color(NamedTextColor.RED);
-
-                sender.sendMessage(MiniMessage.miniMessage().serialize(noPermissionComponent));
+                BetterMending.languageManager.sendMessage(sender, "nopermission");
                 return true;
             }
 
             PluginUtils.reloadConfig();
 
-            sender.sendMessage(ChatColor.GREEN + "Config reloaded!");
+            BetterMending.languageManager.sendMessage(sender, "reloaded");
 
             return true;
+        } else if(args.length == 2 && args[0].startsWith("lang") && sender instanceof Player player) {
+            String selectedLanguage = args[1];
+
+            if(selectedLanguage.equalsIgnoreCase("reset")) {
+                BetterMending.languageManager.removePlayerLanguage(player);
+                BetterMending.languageManager.sendMessage(player, "language.set");
+                return true;
+            }
+
+            // Parse language
+            Locale locale = BetterMending.languageManager.parseLocale(selectedLanguage);
+
+            // If locale doesn't exist, set to default
+            if(!BetterMending.languageManager.getLocales().contains(locale)) {
+                BetterMending.languageManager.removePlayerLanguage(player);
+                BetterMending.languageManager.sendMessage(player, "language.set");
+                return true;
+            }
+
+            BetterMending.languageManager.setPlayerLanguage(player, locale);
+            BetterMending.languageManager.sendMessage(player, "language.set");
         }
 
         return true;
@@ -68,7 +83,17 @@ public class CommandBTM implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(args.length == 0 || args.length == 1) {
-            return Arrays.asList("toggle", "reload", "version");
+            return Arrays.asList("toggle", "reload", "version", "language");
+        }
+
+        if(args.length == 2 && args[0].startsWith("lang")) {
+            List<String> languageOptions = BetterMending.languageManager.getLocales()
+                    .stream()
+                    .map(Locale::toString)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            languageOptions.add("reset");
+
+            return languageOptions;
         }
 
         return null;

@@ -1,3 +1,10 @@
+# -------- LANGUAGE --------
+language:
+  # Default language for the plugin
+  default: "en_US"
+  # If true, ignore player lang, except if he used a command to set it
+  force-universal-default: false
+
 # -------- CUSTOMIZE ABILITY --------
 
 # Automatically repair all damaged tools in player inventory
@@ -29,14 +36,6 @@ cooldown:
   # True if the cooldown should do a sound
   # default: true
   sound: true
-
-  # The cooldown text, $s is the actual remaining seconds
-  text: "&4Please wait $s seconds before using this ability!"
-
-# Configure /btm toggle texts (suggested by _qingniao)
-toggle:
-  enabled: "Mending's ability has been &aenabled &r!"
-  disabled: "Mending's ability has been &cdisabled &r!"
 
 # The removed experience when the mending ability is used
 # You'd better use ratio instead
@@ -103,8 +102,14 @@ blacklisted-players:
 # Items that are not allowed to be repaired
 # Also support Oraxen items (with their name, not their display name)
 blacklisted-items:
-  # Example:
-  # - "DIAMOND_SWORD"
+# Example:
+# - "DIAMOND_SWORD"
+
+# Keywords in lores that make the item not allowed to be repaired. not case-sensitive
+blacklisted-lores:
+# Example:
+# - "hammer"
+# - "a strong sword"
 
 ## -------- CONFIGURATION --------
 # Override the default plugin choice for data storage.

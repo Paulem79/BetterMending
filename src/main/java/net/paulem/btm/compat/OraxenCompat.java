@@ -8,7 +8,8 @@ public class OraxenCompat extends OraxenDefaultCompat {
     @Override
     public boolean isBlacklisted(ItemStack stack) {
         String id = OraxenItems.getIdByItem(stack);
-        return BetterMending.configBlacklist.getBlacklistedItems().contains(id)
+
+        return super.isBlacklisted(stack) || BetterMending.configBlacklist.getBlacklistedItems().contains(id)
                 || BetterMending.configBlacklist.getBlacklistedItems().contains(OraxenItems.getItemById(id).getItemName());
     }
 }

@@ -27,8 +27,7 @@ public class PreventDestroyListener extends ManagersListener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPreventDestroyAttack(EntityDamageByEntityEvent e){
-        if(!(e.getDamager() instanceof Player)) return;
-        Player player = (Player) e.getDamager();
+        if(!(e.getDamager() instanceof Player player)) return;
 
         if(isPreventNeeded(player)) {
             e.setCancelled(true);

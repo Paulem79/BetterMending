@@ -14,7 +14,7 @@ softdepend:
 
 commands:
   btm:
-    usage: /btm [toggle, reload, version]
+    usage: /btm [toggle, reload, version, language]
     description: Enable or disable the Mending skill
     permission: btm.commands.btm
     aliases:

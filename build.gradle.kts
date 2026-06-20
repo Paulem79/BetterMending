@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "net.paulem.btm"
-version = "2.11"
+version = "3.0.0"
 
 // ------------------------ REPOSITORIES ------------------------
 repositories {
@@ -45,6 +45,7 @@ dependencies {
 
     implementation(libs.adventure)
     implementation(libs.adventure.text.minimessage)
+    implementation(libs.adventure.text.legacy)
 
     implementation(libs.spigotUpdateChecker) {
         exclude(group = "com.github.Anon8281", module = "UniversalScheduler")
@@ -71,7 +72,6 @@ tasks.shadowJar {
     exclude("LICENSE.txt")
     exclude("License-ASM.txt")
 
-    relocate("com.github.fierioziy.particlenativeapi", "net.paulem.btm.libs.particleapi")
     relocate("com.jeff_media.updatechecker", "net.paulem.btm.libs.updatechecker")
 
     // Use UniversalScheduler from SpigotUpdateChecker instead of the one from implementation
@@ -81,6 +81,8 @@ tasks.shadowJar {
     exclude("com/github/Anon8281/universalScheduler/UniversalScheduler.**")
 
     relocate("com.github.Anon8281.universalScheduler", "net.paulem.btm.libs.updatechecker.universalScheduler")
+
+    relocate("net.kyori.adventure", "net.paulem.btm.libs.adventure")
 
     minimize()
 }
@@ -97,7 +99,7 @@ tasks.processResources {
 // ------------------------ PAPER TEST SYSTEM ------------------------
 val paperDir = rootDir.resolve("servers").resolve("paper")
 
-listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21", "1.21.4", "1.21.5", "1.21.11", "26.1.2").forEach { version ->
+listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.15.2", "1.16.5", "1.17.1", "1.18.2", "1.19.4", "1.20.1", "1.20.4", "1.20.6", "1.21", "1.21.4", "1.21.5", "1.21.11", "26.1.2").forEach { version ->
     tasks.register<LaunchMinecraftServerTask>("paper-$version") {
         group = "minecraft"
         description = "Launches a Paper $version server"
@@ -111,8 +113,7 @@ listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21", "1.21.4", "1.21.5", "1.21.
         serverDirectory.set(paperDir.resolve(version).absolutePath)
         jarUrl.set(LaunchMinecraftServerTask.JarUrl.Paper(version))
         agreeEula.set(true)
-        // Edit used jvm to use java 8
-        jvmArgument.set(listOf("-Djava.awt.headless=true", "-Xms512M", "-Xmx2G", "-XX:+UseG1GC"))
+        jvmArgument.set(listOf("-Djava.awt.headless=true", "-Xms512M", "-Xmx2G", "-XX:+UseG1GC", "-Dpaper.playerbreeding=true"))
     }
 }
 
@@ -176,7 +177,7 @@ modrinth {
     versionType.set("release")
     changelog.set(NewGithubChangelog.getChangelog())
     uploadFile.set(tasks.shadowJar.get().archiveFile.get().asFile)
-    gameVersions.addAll(listOf("1.21.11", "1.21.10", "1.21.9", "1.21.8", "1.21.7", "1.21.6", "1.21.5", "1.21.4", "1.21.3", "1.21.2", "1.21.1", "1.21", "1.20.6", "1.20.5", "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17", "1.16.5", "1.16.4", "1.16.3", "1.16.2", "1.16.1", "1.16", "1.15.2", "1.15.1", "1.15", "1.14.4", "1.14.3", "1.14.2", "1.14.1", "1.14", "1.13.2", "1.13.1", "1.13", "1.12.2", "1.12.1", "1.12", "1.11.2", "1.11.1", "1.11", "1.10.2", "1.10.1", "1.10", "1.9.4", "1.9.3", "1.9.2", "1.9.1", "1.9"))
+    gameVersions.addAll(listOf("1.21.11", "1.21.10", "1.21.9", "1.21.8", "1.21.7", "1.21.6", "1.21.5", "1.21.4", "1.21.3", "1.21.2", "1.21.1", "1.21", "1.20.6", "1.20.5", "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17", "1.16.5"))
     loaders.addAll(listOf("bukkit", "folia", "paper", "purpur", "spigot"))
 }
 
@@ -190,13 +191,13 @@ tasks.register<Task>("changelog") {
 
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_21)
+        jvmTarget.set(JvmTarget.JVM_16)
     }
 }
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
-    options.release.set(21)
+    options.release.set(16)
 }
 
 tasks.build {

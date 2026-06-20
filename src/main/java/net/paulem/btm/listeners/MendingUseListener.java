@@ -1,9 +1,8 @@
 package net.paulem.btm.listeners;
 
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.paulem.btm.utils.PlayerUtils;
-import net.paulem.btm.utils.PluginUtils;
 import org.bukkit.GameMode;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -110,14 +109,7 @@ public class MendingUseListener extends ManagersListener {
 
         if (!(timeLeft.isZero() || timeLeft.isNegative())) {
             if(BetterMending.instance.getConfig().getBoolean("cooldown.message", true)) {
-                String text = PluginUtils.parseConfigText(
-                                "cooldown.text",
-                                ChatColor.DARK_RED + "Please wait " + timeLeft.getSeconds() + " seconds before using this ability!"
-
-                        )
-                        .replace("$s", String.valueOf(timeLeft.getSeconds()));
-
-                player.sendMessage(text);
+                BetterMending.languageManager.sendMessage(player, "cooldown", Placeholder.parsed("time", String.valueOf(timeLeft.getSeconds())));
             }
             if(BetterMending.instance.getConfig().getBoolean("cooldown.sound", true))
                 player.playSound(

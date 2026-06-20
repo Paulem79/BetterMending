@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack
 class ConfigBlacklist {
     val blacklistedPlayers: List<String>
     val blacklistedItems: List<String>
+    val blacklistedLores: List<String>
 
     init {
         val config = BetterMending.instance.config
@@ -15,6 +16,9 @@ class ConfigBlacklist {
             .map { it.lowercase() }
 
         blacklistedItems = config.getStringList("blacklisted-items")
+
+        blacklistedLores = config.getStringList("blacklisted-lores")
+            .map { it.lowercase() }
     }
 
     fun isBlacklisted(player: Player): Boolean {
@@ -22,7 +26,6 @@ class ConfigBlacklist {
     }
 
     fun isBlacklisted(stack: ItemStack): Boolean {
-        return blacklistedItems.any { it.equals(stack.type.name, ignoreCase = true) }
-                || BetterMending.oraxenCompat.isBlacklisted(stack)
+        return BetterMending.oraxenCompat.isBlacklisted(stack)
     }
 }

@@ -12,6 +12,7 @@ import net.paulem.btm.libs.bstats.Metrics
 import net.paulem.btm.listeners.MendingUseListener
 import net.paulem.btm.listeners.PreventDestroyListener
 import net.paulem.btm.managers.RepairManager
+import net.paulem.btm.translation.LanguageManager
 import net.paulem.btm.utils.PluginUtils
 import net.paulem.btm.versioned.Versioning
 import net.paulem.btm.versioned.damage.DamageHandler
@@ -21,6 +22,7 @@ import net.paulem.btm.versioned.playerconfig.PlayerConfigHandler
 import net.paulem.btm.versioned.playerconfig.PlayerConfigLegacy
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
+
 
 class BetterMending : JavaPlugin() {
     companion object {
@@ -32,6 +34,7 @@ class BetterMending : JavaPlugin() {
         lateinit var repairManager: RepairManager
         lateinit var configBlacklist: ConfigBlacklist
         lateinit var oraxenCompat: OraxenDefaultCompat
+        lateinit var languageManager: LanguageManager
     }
 
     override fun onEnable() {
@@ -47,6 +50,8 @@ class BetterMending : JavaPlugin() {
 
         saveDefaultConfig()
         ConfigManager().migrate()
+
+        languageManager = LanguageManager(this)
 
         playerConfig = PlayerConfigHandler.of()
         damageHandler = if (Versioning.isPost17()) DamageNewer() else DamageLegacy()
@@ -94,6 +99,9 @@ class BetterMending : JavaPlugin() {
      * Init the methods linked to config values (so reloadable)
      */
     fun reloadModifiables() {
+        // Copy and merge to langs/
+        languageManager.init()
+
         if (config.getBoolean("auto-repair", false)) {
             repairManager.initAutoRepair()
         }

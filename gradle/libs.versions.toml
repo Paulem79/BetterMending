@@ -4,17 +4,16 @@ kotlin = "2.4.0"
 shadow = "8.3.11"
 minotaur = "2.9.0"
 minecraft-server = "4.0.2"
-freefair-lombok = "9.5.0"
+freefair-lombok = "8.14.4"
 
 # API
 spigot-api = "26.2-R0.1-SNAPSHOT"
 annotations = "26.1.0"
 placeholderapi = "2.12.2"
-oraxen = "1.216.0"
+oraxen = "1.212.0"
 
 # Libraries
-adventure = "5.1.1"
-adventure-text-minimessage = "5.1.1"
+adventure = "4.26.1"
 spigotUpdateChecker = "3.0.4"
 universalScheduler = "0.1.7"
 validation-api = "2.0.1.Final"
@@ -27,7 +26,8 @@ placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "pl
 oraxen = { group = "io.th0rgal", name = "oraxen", version.ref = "oraxen" }
 
 adventure = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
-adventure-text-minimessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure-text-minimessage" }
+adventure-text-minimessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure" }
+adventure-text-legacy = { group = "net.kyori", name = "adventure-text-serializer-legacy", version.ref = "adventure" }
 spigotUpdateChecker = { group = "com.jeff_media", name = "SpigotUpdateChecker", version.ref = "spigotUpdateChecker" }
 universalScheduler = { group = "com.github.Anon8281", name = "UniversalScheduler", version.ref = "universalScheduler" }
 exp4j = { group = "net.objecthunter", name = "exp4j", version.ref = "exp4j" }

@@ -8,9 +8,7 @@ public class ConfigManager {
     }
 
     public void migrate(){
-        FileConfiguration config = BetterMending.instance.getConfig();
-
-        int detectedVersion = config.getInt("version", 0);
+        int detectedVersion = BetterMending.instance.getConfigVersion();
         new ConfigUpdater().checkUpdate(detectedVersion);
     }
 }

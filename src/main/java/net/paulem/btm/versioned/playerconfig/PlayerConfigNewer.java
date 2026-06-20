@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class PlayerConfigNewer extends PlayerConfigHandler {
     private final NamespacedKey playerConfigKey = new NamespacedKey(BetterMending.instance, "playerConfig");
-    private static final PersistentDataType<Byte, Boolean> type = PersistentDataType.BOOLEAN;
+    private static final PersistentDataType<Byte, Byte> type = PersistentDataType.BYTE;
 
     @Nullable
     private YamlConfiguration data = null;
@@ -63,12 +63,16 @@ public class PlayerConfigNewer extends PlayerConfigHandler {
     @Override
     @Nullable
     public Boolean getPlayer(Player player) {
-        return player.getPersistentDataContainer().get(playerConfigKey, type);
+        Byte playerConfigValue = player.getPersistentDataContainer().get(playerConfigKey, type);
+
+        if(playerConfigValue == null) return null;
+
+        return playerConfigValue == 1;
     }
 
     @Override
     public boolean setPlayer(Player player, boolean enabled) {
-        player.getPersistentDataContainer().set(playerConfigKey, type, enabled);
+        player.getPersistentDataContainer().set(playerConfigKey, type, enabled ? (byte) 1 : (byte) 0);
         return enabled;
     }
 
