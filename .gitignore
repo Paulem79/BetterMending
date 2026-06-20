@@ -1,5 +1,4 @@
 .kotlin
-resources/
 servers/
 .idea
 .gradle
@@ -31,13 +30,6 @@ out/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
 
 ### VS Code ###
 .vscode/
