@@ -1,0 +1,43 @@
+[versions]
+# Plugins
+kotlin = "2.4.0"
+shadow = "8.3.11"
+minotaur = "2.9.0"
+minecraft-server = "4.0.2"
+freefair-lombok = "9.5.0"
+
+# API
+spigot-api = "26.2-R0.1-SNAPSHOT"
+annotations = "26.1.0"
+placeholderapi = "2.12.2"
+oraxen = "1.216.0"
+
+# Libraries
+adventure = "5.1.1"
+adventure-text-minimessage = "5.1.1"
+spigotUpdateChecker = "3.0.4"
+universalScheduler = "0.1.7"
+validation-api = "2.0.1.Final"
+exp4j = "0.4.8"
+
+[libraries]
+spigot-api = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot-api" }
+annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
+placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
+oraxen = { group = "io.th0rgal", name = "oraxen", version.ref = "oraxen" }
+
+adventure = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
+adventure-text-minimessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure-text-minimessage" }
+spigotUpdateChecker = { group = "com.jeff_media", name = "SpigotUpdateChecker", version.ref = "spigotUpdateChecker" }
+universalScheduler = { group = "com.github.Anon8281", name = "UniversalScheduler", version.ref = "universalScheduler" }
+exp4j = { group = "net.objecthunter", name = "exp4j", version.ref = "exp4j" }
+
+validation-api = { group = "javax.validation", name = "validation-api", version.ref = "validation-api" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-lombok = { id = "org.jetbrains.kotlin.plugin.lombok", version.ref = "kotlin" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
+minecraft-server = { id = "dev.s7a.gradle.minecraft.server", version.ref = "minecraft-server" }
+freefair-lombok = { id = "io.freefair.lombok", version.ref = "freefair-lombok" }

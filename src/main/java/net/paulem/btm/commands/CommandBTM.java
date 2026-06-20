@@ -1,5 +1,9 @@
 package net.paulem.btm.commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.paulem.btm.BetterMending;
 import net.paulem.btm.utils.PluginUtils;
 import org.bukkit.ChatColor;
@@ -13,34 +17,40 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CommandBTM implements TabExecutor {
-    public final int configVersion;
     public final PlayerConfigHandler playerDataConfig;
     public final String pluginVersion;
 
-    public CommandBTM(int configVersion, PlayerConfigHandler playerDataConfig) {
-        this.configVersion = configVersion;
+    public CommandBTM(PlayerConfigHandler playerDataConfig) {
         this.playerDataConfig = playerDataConfig;
         this.pluginVersion = BetterMending.instance.getDescription().getVersion();
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(sender instanceof ConsoleCommandSender) {
-            sender.sendMessage(ChatColor.BLUE + "Running BetterThanMending " + ChatColor.GOLD + pluginVersion + ChatColor.BLUE + " with config version " + ChatColor.DARK_GREEN + configVersion + ChatColor.BLUE);
-            return true;
-        }
+        if ((args.length == 1 && args[0].equalsIgnoreCase("version")) || sender instanceof ConsoleCommandSender) {
+            TextComponent versionComponent = Component.text("Running BetterThanMending")
+                    .color(NamedTextColor.BLUE)
+                    .append(Component.text(pluginVersion).color(NamedTextColor.GOLD))
+                    .append(Component.text(" with config version ").color(NamedTextColor.BLUE))
+                    .append(Component.text(BetterMending.instance.getConfigVersion()).color(NamedTextColor.DARK_GREEN));
+            sender.sendMessage(MiniMessage.miniMessage().serialize(versionComponent));
 
-        if((args.length == 0 || args[0].equalsIgnoreCase("toggle")) && sender instanceof Player) {
-            Player player = (Player) sender;
-
+        } else if((args.length == 0 || args[0].equalsIgnoreCase("toggle")) && sender instanceof Player player) {
             boolean enabled = playerDataConfig.setPlayer(player, !playerDataConfig.getPlayerOrCreate(player, true));
 
-            player.sendMessage("Mending's ability has been successfully " + (enabled ? ChatColor.GREEN + "enabled" : ChatColor.RED + "disabled") + " !");
+            if(enabled) {
+                player.sendMessage(PluginUtils.parseConfigText("toggle.enabled", "Mending's ability has been &aenabled &r!"));
+            } else {
+                player.sendMessage(PluginUtils.parseConfigText("toggle.disabled", "Mending's ability has been &cdisabled &r!"));
+            }
 
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             if (!sender.hasPermission("btm.reload")) {
-                sender.sendMessage(ChatColor.RED + "You don't have permission to do that!");
+                TextComponent noPermissionComponent = Component.text("You don't have permission to do that!")
+                        .color(NamedTextColor.RED);
+
+                sender.sendMessage(MiniMessage.miniMessage().serialize(noPermissionComponent));
                 return true;
             }
 
@@ -49,8 +59,6 @@ public class CommandBTM implements TabExecutor {
             sender.sendMessage(ChatColor.GREEN + "Config reloaded!");
 
             return true;
-        } else if (args.length == 1 && args[0].equalsIgnoreCase("version")) {
-            sender.sendMessage(ChatColor.BLUE + "Running BetterThanMending " + ChatColor.GOLD + pluginVersion + ChatColor.BLUE + " with config version " + ChatColor.DARK_GREEN + configVersion + ChatColor.BLUE);
         }
 
         return true;
@@ -59,6 +67,10 @@ public class CommandBTM implements TabExecutor {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return Arrays.asList("toggle", "reload", "version");
+        if(args.length == 0 || args.length == 1) {
+            return Arrays.asList("toggle", "reload", "version");
+        }
+
+        return null;
     }
 }

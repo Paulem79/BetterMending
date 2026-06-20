@@ -4,17 +4,16 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    // Use kotlin
-    kotlin("jvm") version "2.4.0"
-    id("com.gradleup.shadow") version "8.3.11"
-
-    id("com.modrinth.minotaur") version "2.9.0"
-
-    id("dev.s7a.gradle.minecraft.server") version "4.0.2"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.lombok)
+    alias(libs.plugins.freefair.lombok)
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.minotaur)
+    alias(libs.plugins.minecraft.server)
 }
 
 group = "net.paulem.btm"
-version = "2.10.0"
+version = "2.11"
 
 // ------------------------ REPOSITORIES ------------------------
 repositories {
@@ -41,26 +40,25 @@ repositories {
 
 // ------------------------ DEPENDENCIES ------------------------
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.21.11-R0.1-SNAPSHOT")
-    compileOnly("org.jetbrains:annotations:26.1.0")
+    compileOnly(libs.spigot.api)
+    compileOnly(libs.annotations)
 
-    implementation("com.jeff_media:SpigotUpdateChecker:3.0.4") {
+    implementation(libs.adventure)
+    implementation(libs.adventure.text.minimessage)
+
+    implementation(libs.spigotUpdateChecker) {
         exclude(group = "com.github.Anon8281", module = "UniversalScheduler")
         exclude(group = "com.jeff_media.updatechecker.universalScheduler")
     }
-    implementation("com.github.Anon8281:UniversalScheduler:0.1.7")
-    implementation("com.github.fierioziy.particlenativeapi:ParticleNativeAPI-core:4.5.1")
+    implementation(libs.universalScheduler)
 
-    compileOnly("me.clip:placeholderapi:2.12.2")
-    compileOnly("io.th0rgal:oraxen:1.210.0")
+    compileOnly(libs.placeholderapi)
+    compileOnly(libs.oraxen)
 
-    compileOnly("org.projectlombok:lombok:1.18.46")
-    annotationProcessor("org.projectlombok:lombok:1.18.46")
+    compileOnly(libs.validation.api)
+    annotationProcessor(libs.validation.api)
 
-    compileOnly("javax.validation:validation-api:2.0.1.Final")
-    annotationProcessor("javax.validation:validation-api:2.0.1.Final")
-
-    implementation("net.objecthunter:exp4j:0.4.8")
+    implementation(libs.exp4j)
 }
 
 // ------------------------ SHADOW JAR ------------------------
@@ -99,8 +97,11 @@ tasks.processResources {
 // ------------------------ PAPER TEST SYSTEM ------------------------
 val paperDir = rootDir.resolve("servers").resolve("paper")
 
-listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21", "1.21.4", "1.21.5", "1.21.11").forEach { version ->
+listOf("1.9.4", "1.12.2", "1.13.2", "1.14.4", "1.21", "1.21.4", "1.21.5", "1.21.11", "26.1.2").forEach { version ->
     tasks.register<LaunchMinecraftServerTask>("paper-$version") {
+        group = "minecraft"
+        description = "Launches a Paper $version server"
+
         dependsOn(tasks.build)
 
         doFirst {
@@ -119,6 +120,9 @@ val foliaDir = rootDir.resolve("servers").resolve("folia")
 
 listOf("1.21.4").forEach { version ->
     tasks.register<LaunchMinecraftServerTask>("folia-$version") {
+        group = "minecraft"
+        description = "Launches a Folia $version server"
+
         dependsOn(tasks.build)
 
         doFirst {
@@ -186,13 +190,13 @@ tasks.register<Task>("changelog") {
 
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_1_8)
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
-    options.release.set(8)
+    options.release.set(21)
 }
 
 tasks.build {

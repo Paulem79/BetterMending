@@ -2,6 +2,7 @@ package net.paulem.btm.listeners;
 
 import net.paulem.btm.BetterMending;
 import net.paulem.btm.listeners.extendables.ManagersListener;
+import net.paulem.btm.utils.PlayerUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -47,7 +48,7 @@ public class PreventDestroyListener extends ManagersListener {
     public boolean isPreventNeeded(Player player){
         if(!BetterMending.instance.getConfig().getBoolean("prevent-destroy", false)) return false;
 
-        if(!player.hasPermission("btm.use")) return false;
+        if(!PlayerUtils.canUseBtm(player)) return false;
 
         ItemStack item = player.getInventory().getItemInMainHand();
 

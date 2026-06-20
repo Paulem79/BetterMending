@@ -33,6 +33,11 @@ cooldown:
   # The cooldown text, $s is the actual remaining seconds
   text: "&4Please wait $s seconds before using this ability!"
 
+# Configure /btm toggle texts (suggested by _qingniao)
+toggle:
+  enabled: "Mending's ability has been &aenabled &r!"
+  disabled: "Mending's ability has been &cdisabled &r!"
+
 # The removed experience when the mending ability is used
 # You'd better use ratio instead
 # You can use %exp% to manipulate player experience with operations, like "%exp% - 20"
@@ -111,8 +116,5 @@ file-based: false
 # BStats statistics (help me to make my plugin better!)
 bstat: true
 
-# Crashlog reporting to my Discord (help me to fix bugs faster!)
-crashlogSending: true
-
 # Please, do not touch!
-version: 14
+version: 15

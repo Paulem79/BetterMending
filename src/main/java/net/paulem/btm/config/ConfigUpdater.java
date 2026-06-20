@@ -17,7 +17,6 @@ import net.paulem.btm.utils.PluginUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.google.common.base.Charsets;
 import net.paulem.btm.BetterMending;
 
 public class ConfigUpdater {

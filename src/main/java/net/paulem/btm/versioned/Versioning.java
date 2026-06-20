@@ -6,6 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Versioning {
+    private Versioning() {
+        /* This utility class should not be instantiated */
+    }
+
     // cache lazily the parsed parts
     private static String[] mcParts;
 
@@ -55,14 +59,6 @@ public class Versioning {
 
     public static boolean isPost9() {
         return isPost(9);
-    }
-
-    public static boolean isLegacy() {
-        return !isPost(12, 2);
-    }
-
-    public static boolean isIn13() {
-        return isPost(12, 2) && !isPost(13, 2);
     }
 
     public static boolean isPost(int v) {

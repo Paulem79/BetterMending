@@ -3,7 +3,9 @@ package net.paulem.btm.managers;
 import com.github.Anon8281.universalScheduler.UniversalRunnable;
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.tasks.MyScheduledTask;
 import net.paulem.btm.BetterMending;
+import net.paulem.btm.utils.PlayerUtils;
 import net.paulem.btm.versioned.damage.DamageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,14 +15,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import net.paulem.btm.utils.ExperienceUtils;
 import net.paulem.btm.utils.MathUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 public class RepairManager {
     private final TaskScheduler scheduler;
+    @Nullable
+    private MyScheduledTask scheduledTask;
 
     private final ParticleManager particleManager;
 
@@ -31,13 +35,17 @@ public class RepairManager {
     }
 
     public void initAutoRepair(){
+        if(this.scheduledTask != null) {
+            scheduledTask.cancel();
+        }
+
         long delay = BetterMending.instance.getConfig().getLong("delay", 40L);
 
-        scheduler.runTaskTimer(new UniversalRunnable() {
+        this.scheduledTask = scheduler.runTaskTimer(new UniversalRunnable() {
             @Override
             public void run() {
-                for(Player player : Bukkit.getOnlinePlayers()){
-                    if(!player.hasPermission("btm.use") || BetterMending.configBlacklist.isBlacklisted(player)) continue;
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (!PlayerUtils.canUseBtm(player)) continue;
 
                     List<ItemStack> damageables = Arrays.stream(player.getInventory().getContents())
                             .filter(i -> i != null &&
@@ -47,9 +55,9 @@ public class RepairManager {
                                     i.containsEnchantment(Enchantment.MENDING) &&
                                     BetterMending.damageHandler.isDamageable(i) &&
                                     BetterMending.damageHandler.hasDamage(i)
-                            ).collect(Collectors.toList());
+                            ).toList();
 
-                    if(!damageables.isEmpty()) {
+                    if (!damageables.isEmpty()) {
                         if (BetterMending.instance.getConfig().getBoolean("repairFullInventory", true)) {
                             for (ItemStack item : damageables) {
                                 if (item != null) {

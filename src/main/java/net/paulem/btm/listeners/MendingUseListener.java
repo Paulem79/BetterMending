@@ -1,5 +1,7 @@
 package net.paulem.btm.listeners;
 
+import net.paulem.btm.utils.PlayerUtils;
+import net.paulem.btm.utils.PluginUtils;
 import org.bukkit.GameMode;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,17 +18,13 @@ import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import net.paulem.btm.BetterMending;
 import net.paulem.btm.listeners.extendables.ManagersListener;
-import net.paulem.btm.versioned.sounds.SoundsHandler;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class MendingUseListener extends ManagersListener {
-    private static final Sound ENDERMAN_TELEPORT_SOUND = SoundsHandler.getSoundHandler().getEndermanTeleportSound();
-
     private final Map<UUID, Integer> cooldownUses = new HashMap<>();
     private final TaskScheduler scheduler;
 
@@ -39,10 +37,10 @@ public class MendingUseListener extends ManagersListener {
     public void onItemUse(PlayerInteractEvent e) {
         Player player = e.getPlayer();
 
-        // If the player doesn't have perm btm.use, is in creative or spectator mode, or is blacklisted, then do not repair
-        if(!player.hasPermission("btm.use") ||
-                Arrays.asList(GameMode.SPECTATOR, GameMode.CREATIVE).contains(player.getGameMode()) ||
-                BetterMending.configBlacklist.isBlacklisted(player)) return;
+        // If the player can't use btm, is in creative or spectator mode, then do not repair
+        if(!PlayerUtils.canUseBtm(player) ||
+                (player.getGameMode() == GameMode.SPECTATOR ||
+                player.getGameMode() == GameMode.CREATIVE)) return;
 
         if(!BetterMending.playerConfig.getPlayerOrCreate(player, true)) return;
 
@@ -63,10 +61,10 @@ public class MendingUseListener extends ManagersListener {
         UUID playerId = player.getUniqueId();
 
         // I like spaghetti. (I'll improve this)
-        if(cooldownManager.getDefaultCooldown() == 0) {
+        if(getCooldownManager().getDefaultCooldown() == 0) {
 
             useRepair(player, item);
-        } else if(cooldownManager.hasCooldown(playerId)) {
+        } else if(getCooldownManager().hasCooldown(playerId)) {
 
             alertCooldown(playerId, player);
         } else if(cooldownUses.containsKey(playerId)) {
@@ -93,7 +91,7 @@ public class MendingUseListener extends ManagersListener {
             cooldownUses.remove(playerId);
 
             // Set the cooldown before next use
-            cooldownManager.setCooldown(playerId, Duration.ofSeconds(cooldownManager.getDefaultCooldown()));
+            getCooldownManager().setCooldown(playerId, Duration.ofSeconds(getCooldownManager().getDefaultCooldown()));
 
             // Alert
             alertCooldown(playerId, player);
@@ -107,22 +105,24 @@ public class MendingUseListener extends ManagersListener {
     }
 
     public void alertCooldown(UUID playerId, Player player){
-        Duration timeLeft = cooldownManager.getRemainingCooldown(playerId);
+        Duration timeLeft = getCooldownManager().getRemainingCooldown(playerId);
+        if(timeLeft == null) return;
+
         if (!(timeLeft.isZero() || timeLeft.isNegative())) {
             if(BetterMending.instance.getConfig().getBoolean("cooldown.message", true)) {
-                String text = BetterMending.instance.getConfig().getString(
+                String text = PluginUtils.parseConfigText(
                                 "cooldown.text",
                                 ChatColor.DARK_RED + "Please wait " + timeLeft.getSeconds() + " seconds before using this ability!"
 
-                        ).replace("&", "§")
-                        .replace("$s", ""+timeLeft.getSeconds());
+                        )
+                        .replace("$s", String.valueOf(timeLeft.getSeconds()));
 
                 player.sendMessage(text);
             }
-            if(BetterMending.instance.getConfig().getBoolean("cooldown.sound", true) && ENDERMAN_TELEPORT_SOUND != null)
+            if(BetterMending.instance.getConfig().getBoolean("cooldown.sound", true))
                 player.playSound(
                         player.getLocation(),
-                        ENDERMAN_TELEPORT_SOUND,
+                        Sound.ENTITY_ENDERMAN_TELEPORT,
                         1, 1);
         }
     }

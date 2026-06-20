@@ -48,8 +48,6 @@ class BetterMending : JavaPlugin() {
         saveDefaultConfig()
         ConfigManager().migrate()
 
-        val config = getConfig()
-
         playerConfig = PlayerConfigHandler.of()
         damageHandler = if (Versioning.isPost17()) DamageNewer() else DamageLegacy()
         repairManager = RepairManager()
@@ -64,7 +62,7 @@ class BetterMending : JavaPlugin() {
         server.pluginManager.registerEvents(MendingUseListener(), this)
         server.pluginManager.registerEvents(PreventDestroyListener(), this)
 
-        val commandBTM = CommandBTM(config.getInt("version", 0), playerConfig)
+        val commandBTM = CommandBTM(playerConfig)
         getCommand("btm")!!.setExecutor(commandBTM)
         getCommand("btm")!!.tabCompleter = commandBTM
 
@@ -81,6 +79,21 @@ class BetterMending : JavaPlugin() {
             OraxenDefaultCompat()
         }
 
+        reloadModifiables()
+
+        PluginUtils.reloadConfig()
+
+        logger.info("Enabled!")
+    }
+
+    override fun onDisable() {
+        logger.info("Disabled! See you later!")
+    }
+
+    /**
+     * Init the methods linked to config values (so reloadable)
+     */
+    fun reloadModifiables() {
         if (config.getBoolean("auto-repair", false)) {
             repairManager.initAutoRepair()
         }
@@ -99,13 +112,9 @@ class BetterMending : JavaPlugin() {
                 ) { config.getBoolean("auto-repair", false).toString() }
             )
         }
-
-        PluginUtils.reloadConfig()
-
-        logger.info("Enabled!")
     }
 
-    override fun onDisable() {
-        logger.info("Disabled! See you later!")
+    fun getConfigVersion(): Int {
+        return config.getInt("version", 0)
     }
 }
