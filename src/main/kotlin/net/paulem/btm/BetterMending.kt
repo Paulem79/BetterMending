@@ -104,6 +104,8 @@ class BetterMending : JavaPlugin() {
 
         if (config.getBoolean("auto-repair", false)) {
             repairManager.initAutoRepair()
+        } else {
+            repairManager.stopOldAutoRepair()
         }
 
         if (config.getBoolean("bstat", true)) {

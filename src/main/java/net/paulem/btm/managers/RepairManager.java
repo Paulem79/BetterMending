@@ -34,10 +34,14 @@ public class RepairManager {
         this.particleManager = new ParticleManager();
     }
 
-    public void initAutoRepair(){
+    public void stopOldAutoRepair(){
         if(this.scheduledTask != null) {
             scheduledTask.cancel();
         }
+    }
+
+    public void initAutoRepair(){
+        stopOldAutoRepair();
 
         long delay = BetterMending.instance.getConfig().getLong("delay", 40L);
 
