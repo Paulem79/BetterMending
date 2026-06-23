@@ -49,7 +49,7 @@ public class RepairManager {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (!PlayerUtils.canUseBtm(player)) continue;
+                    if (!PlayerUtils.canUseBtmAutoRepair(player)) continue;
 
                     List<ItemStack> damageables = Arrays.stream(player.getInventory().getContents())
                             .filter(i -> i != null &&

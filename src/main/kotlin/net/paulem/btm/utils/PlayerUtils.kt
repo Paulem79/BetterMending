@@ -8,4 +8,9 @@ object PlayerUtils {
     fun canUseBtm(player: Player): Boolean {
         return player.hasPermission("btm.use") && !BetterMending.configBlacklist.isBlacklisted(player)
     }
+
+    @JvmStatic
+    fun canUseBtmAutoRepair(player: Player): Boolean {
+        return player.hasPermission("btm.use.auto-repair") && !BetterMending.configBlacklist.isBlacklisted(player)
+    }
 }

@@ -33,6 +33,11 @@ public class CommandBTM implements TabExecutor {
 
             return true;
         } else if((args.length == 0 || args[0].equalsIgnoreCase("toggle")) && sender instanceof Player player) {
+            if(!sender.hasPermission("btm.commands.btm")) {
+                BetterMending.languageManager.sendMessage(sender, "nopermission");
+                return true;
+            }
+
             boolean enabled = playerDataConfig.setPlayer(player, !playerDataConfig.getPlayerOrCreate(player, true));
 
             if(enabled) {
@@ -43,7 +48,7 @@ public class CommandBTM implements TabExecutor {
 
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-            if (!sender.hasPermission("btm.reload")) {
+            if (!sender.hasPermission("btm.commands.btm.admin")) {
                 BetterMending.languageManager.sendMessage(sender, "nopermission");
                 return true;
             }
@@ -54,6 +59,11 @@ public class CommandBTM implements TabExecutor {
 
             return true;
         } else if(args.length == 2 && args[0].startsWith("lang") && sender instanceof Player player) {
+            if(!sender.hasPermission("btm.commands.btm.language")) {
+                BetterMending.languageManager.sendMessage(sender, "nopermission");
+                return true;
+            }
+
             String selectedLanguage = args[1];
 
             if(selectedLanguage.equalsIgnoreCase("reset")) {

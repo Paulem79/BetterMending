@@ -15,19 +15,25 @@ softdepend:
 commands:
   btm:
     usage: /btm [toggle, reload, version, language]
-    description: Enable or disable the Mending skill
+    description: Enable or disable the Mending skill, change language, show version, or reload configuration
     permission: btm.commands.btm
     aliases:
       - betterthanmending
       - bettermending
 
 permissions:
-  btm.commands.btm:
-    description: Controls the command /btm used to enable or disable the Mending skill
-    default: true
-  btm.commands.reload:
-    description: Controls the command /btm reload
-    default: op
   btm.use:
-    description: Allows to use the mending ability
+    description: Allows to use the mending ability with right click
     default: true
+  btm.use.auto-repair:
+    description: Allows to use the mending ability with auto-repair in the inventory
+    default: true
+  btm.commands.btm:
+    description: Controls the command /btm [toggle] used to enable or disable the Mending skill
+    default: true
+  btm.commands.btm.language:
+    description: Controls the command /btm language used by the user to change his language
+    default: true
+  btm.commands.btm.admin:
+    description: Controls the admin commands, like /btm reload
+    default: op

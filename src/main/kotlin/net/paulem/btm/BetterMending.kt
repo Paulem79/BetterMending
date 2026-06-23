@@ -56,7 +56,8 @@ class BetterMending : JavaPlugin() {
         playerConfig = PlayerConfigHandler.of()
         damageHandler = if (Versioning.isPost17()) DamageNewer() else DamageLegacy()
         repairManager = RepairManager()
-        configBlacklist = ConfigBlacklist()
+
+        reloadModifiables()
 
         UpdateChecker(this, UpdateCheckSource.SPIGET, SPIGOT_RESOURCE_ID.toString())
             .checkEveryXHours(24.0)
@@ -84,8 +85,6 @@ class BetterMending : JavaPlugin() {
             OraxenDefaultCompat()
         }
 
-        reloadModifiables()
-
         PluginUtils.reloadConfig()
 
         logger.info("Enabled!")
@@ -99,6 +98,8 @@ class BetterMending : JavaPlugin() {
      * Init the methods linked to config values (so reloadable)
      */
     fun reloadModifiables() {
+        configBlacklist = ConfigBlacklist()
+
         // Copy and merge to langs/
         languageManager.init()
 
