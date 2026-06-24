@@ -10,7 +10,7 @@ freefair-lombok = "8.14.4"
 spigot-api = "26.2-R0.1-SNAPSHOT"
 annotations = "26.1.0"
 placeholderapi = "2.12.2"
-oraxen = "1.212.0"
+oraxen = "1.217.0"
 
 # Libraries
 adventure = "4.26.1"
