@@ -13,7 +13,7 @@ placeholderapi = "2.12.2"
 oraxen = "1.212.0"
 
 # Libraries
-adventure = "4.26.1"
+adventure = "5.2.0"
 spigotUpdateChecker = "3.0.4"
 universalScheduler = "0.1.7"
 validation-api = "2.0.1.Final"
