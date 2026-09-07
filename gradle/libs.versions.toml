@@ -1,6 +1,6 @@
 [versions]
 # Plugins
-kotlin = "2.4.0"
+kotlin = "2.4.20"
 shadow = "8.3.11"
 minotaur = "2.9.0"
 minecraft-server = "4.0.2"
